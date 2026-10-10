@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Hệ Thống Quản Lý Khách Hàng Mua Máy & Trả Góp</title>
+  <title>Quản Lý Khách Hàng Mua Máy & Trả Góp</title>
   <style>
-    /* BẢNG MÀU SANG TRỌNG THEO CHUẨN APPLE STORE & FINTECH */
+    /* ==========================================================================
+       DESIGN TOKENS & SYSTEM VARIABLES (APPLE / STRIPE LUXURY STANDARD)
+       ========================================================================== */
     :root {
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -31,9 +33,9 @@
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
       --shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
       --shadow-lg: 0 20px 30px -6px rgba(15, 23, 42, 0.1), 0 8px 12px -4px rgba(15, 23, 42, 0.05);
+      --toast-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
     }
 
-    /* CHẾ ĐỘ DARK MODE SANG TRỌNG (OLED OBSIDIAN LUXURY) */
     [data-theme="dark"] {
       --bg: #090d16;
       --card-bg: #111827;
@@ -56,6 +58,7 @@
       --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
       --shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.4);
       --shadow-lg: 0 20px 35px -6px rgba(0, 0, 0, 0.6);
+      --toast-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.6);
     }
 
     * {
@@ -81,7 +84,9 @@
       margin: 0 auto;
     }
 
-    /* TOP HEADER SANG TRỌNG */
+    /* ==========================================================================
+       HEADER & NAVIGATION
+       ========================================================================== */
     header {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -94,7 +99,6 @@
       box-shadow: var(--shadow-sm);
       flex-wrap: wrap;
       gap: 14px;
-      position: relative;
     }
 
     .brand {
@@ -162,7 +166,6 @@
       flex-wrap: wrap;
     }
 
-    /* THEME TOGGLE BUTTON */
     .theme-toggle-btn {
       background: var(--card-elevated);
       border: 1px solid var(--border);
@@ -183,7 +186,9 @@
       border-color: var(--primary);
     }
 
-    /* KPI OVERVIEW CARDS */
+    /* ==========================================================================
+       KPI DASHBOARD CARDS
+       ========================================================================== */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -249,7 +254,9 @@
       color: var(--text-muted);
     }
 
-    /* MAIN CONTAINER BOX */
+    /* ==========================================================================
+       MAIN DATA CONTAINER
+       ========================================================================== */
     .main-box {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -285,7 +292,7 @@
       flex-wrap: wrap;
     }
 
-    /* BUTTONS CAO CẤP */
+    /* BUTTONS */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -401,7 +408,9 @@
       pointer-events: none;
     }
 
-    /* BẢNG DESKTOP CAO CẤP */
+    /* ==========================================================================
+       DESKTOP TABLE
+       ========================================================================== */
     .table-responsive {
       overflow-x: auto;
       background: var(--card-bg);
@@ -465,7 +474,7 @@
       color: var(--primary);
     }
 
-    /* AVATAR KHÁCH HÀNG */
+    /* CUSTOMER CELL WITH AVATAR */
     .cust-cell {
       display: flex;
       align-items: center;
@@ -504,7 +513,7 @@
       color: var(--text-muted);
     }
 
-    /* THIẾT BỊ CELL */
+    /* DEVICE CELL */
     .device-cell {
       display: flex;
       flex-direction: column;
@@ -548,7 +557,7 @@
     .text-primary { color: var(--primary); }
     .text-danger { color: var(--danger); }
 
-    /* EXPANDABLE DETAIL CONTAINER */
+    /* EXPANDABLE DETAIL ACCORDION */
     .detail-row td {
       padding: 0;
       background: var(--border-subtle);
@@ -660,9 +669,9 @@
       color: var(--success);
     }
 
-    /* =======================================================
-       MOBILE CARDS VIEW (THIẾT KẾ CARD SANG TRỌNG CHO ĐIỆN THOẠI)
-       ======================================================= */
+    /* ==========================================================================
+       MOBILE CARD VIEW (APPLE WALLET STANDARD)
+       ========================================================================== */
     .mobile-cards-view {
       display: none;
       flex-direction: column;
@@ -783,7 +792,6 @@
       color: var(--text-muted);
     }
 
-    /* Progress bar */
     .m-progress-wrap {
       margin-top: 2px;
       display: flex;
@@ -863,7 +871,9 @@
       font-size: 13px;
     }
 
-    /* MODAL FORM CAO CẤP */
+    /* ==========================================================================
+       MODAL FORM
+       ========================================================================== */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -979,7 +989,67 @@
       gap: 10px;
     }
 
-    /* RESPONSIVE MEDIA QUERIES */
+    /* ==========================================================================
+       TOAST NOTIFICATION ENGINE (REPLACES NATIVE ALERT)
+       ========================================================================== */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      min-width: 300px;
+      max-width: 420px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--toast-shadow);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-main);
+      font-size: 13.5px;
+      font-weight: 600;
+      animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.25s ease;
+    }
+
+    @keyframes toastSlideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .toast.hide {
+      transform: translateX(110%);
+      opacity: 0;
+    }
+
+    .toast-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .toast-success .toast-icon { background: var(--success-bg); color: var(--success); }
+    .toast-error .toast-icon { background: var(--danger-bg); color: var(--danger); }
+    .toast-info .toast-icon { background: var(--primary-light); color: var(--primary); }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
     @media (max-width: 1024px) {
       .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1045,10 +1115,21 @@
       .form-row-3 {
         grid-template-columns: 1fr 1fr;
       }
+      .toast-container {
+        top: 16px;
+        right: 16px;
+        left: 16px;
+      }
+      .toast {
+        min-width: unset;
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
+
+<div class="toast-container" id="toastContainer"></div>
 
 <div class="container">
   <!-- TOP HEADER -->
@@ -1059,7 +1140,7 @@
         <h1>Quản Lý Khách Hàng Mua Máy & Trả Góp</h1>
         <p>
           <span class="status-badge" id="serverStatusBadge">
-            <span class="dot"></span> Đồng bộ Cloud Render
+            <span class="dot"></span> Đang kết nối Cloud Render
           </span>
         </p>
       </div>
@@ -1269,33 +1350,48 @@
 </div>
 
 <script>
-  let viewMode = 'compact'; // 'compact': Vừa màn hình; 'full': Tất cả cột
+  /**
+   * ============================================================================
+   * SENIOR FRONTEND CONTROLLER (STATE MANAGEMENT & REACTIVE DATA SYNC)
+   * ============================================================================
+   */
+  const RENDER_CLOUD_URL = 'https://quan-ly-khach-hang-tra-gop-vscode.onrender.com';
+
+  // 1. TOAST NOTIFICATION SERVICE
+  class ToastService {
+    static show(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      let icon = '✓';
+      if (type === 'error') icon = '✕';
+      if (type === 'info') icon = 'ℹ';
+
+      toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <div style="flex:1;">${message}</div>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 250);
+      }, 3200);
+    }
+  }
+
+  // 2. STATE STORE
+  let viewMode = 'compact';
   let isServerConnected = false;
   let apiBaseUrl = '';
   let expandedCustomerId = null;
-  const RENDER_CLOUD_URL = 'https://quan-ly-khach-hang-tra-gop-vscode.onrender.com';
+  let customers = [];
 
-  // Quản lý theme Sáng / Tối
-  function initTheme() {
-    const saved = localStorage.getItem("APP_THEME") || "light";
-    document.documentElement.setAttribute("data-theme", saved);
-    updateThemeIcon(saved);
-  }
-
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute("data-theme") || "light";
-    const next = current === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("APP_THEME", next);
-    updateThemeIcon(next);
-  }
-
-  function updateThemeIcon(theme) {
-    const btn = document.getElementById("themeToggleBtn");
-    if (btn) btn.innerHTML = theme === "dark" ? "☀️" : "🌙";
-  }
-
-  const INITIAL_DATA = [
+  const INITIAL_SEED = [
     {
       id: "KH1",
       name: "NGUYỄN ANH KHOA",
@@ -1385,11 +1481,32 @@
     }
   ];
 
+  // 3. THEME MANAGEMENT
+  function initTheme() {
+    const saved = localStorage.getItem("APP_THEME") || "light";
+    document.documentElement.setAttribute("data-theme", saved);
+    updateThemeIcon(saved);
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute("data-theme") || "light";
+    const next = current === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("APP_THEME", next);
+    updateThemeIcon(next);
+  }
+
+  function updateThemeIcon(theme) {
+    const btn = document.getElementById("themeToggleBtn");
+    if (btn) btn.innerHTML = theme === "dark" ? "☀️" : "🌙";
+  }
+
+  // 4. STORAGE HELPERS
   function loadStorage() {
     const raw = localStorage.getItem("NOTION_INSTALLMENT_CUSTOMERS_V2");
     if (!raw) {
-      localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(INITIAL_DATA));
-      return INITIAL_DATA;
+      localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(INITIAL_SEED));
+      return INITIAL_SEED;
     }
     try {
       const data = JSON.parse(raw);
@@ -1400,11 +1517,9 @@
       });
       return data;
     } catch(e) {
-      return INITIAL_DATA;
+      return INITIAL_SEED;
     }
   }
-
-  let customers = loadStorage();
 
   function formatMoney(num) {
     if (num === null || num === undefined || isNaN(num)) return "—";
@@ -1442,7 +1557,7 @@
     return list;
   }
 
-  // Kết nối Server thông minh (Render Cloud & Localhost)
+  // 5. SERVER API SYNC ENGINE
   async function syncWithServer(manualNotice = false) {
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
     const endpoints = isLocal 
@@ -1456,7 +1571,7 @@
           apiBaseUrl = base;
           const data = await res.json();
           isServerConnected = true;
-          customers = data;
+          customers = Array.isArray(data) ? data : (data.data || []);
           localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
           
           const badge = document.getElementById("serverStatusBadge");
@@ -1466,7 +1581,7 @@
           updateKPIs();
           renderTable();
           startRealtimeSync();
-          if (manualNotice) alert("Đã đồng bộ dữ liệu mới nhất từ Cloud thành công!");
+          if (manualNotice) ToastService.show("Đã đồng bộ dữ liệu mới nhất từ Cloud thành công!", "success");
           return true;
         }
       } catch (e) {}
@@ -1492,7 +1607,8 @@
         try {
           const res = await fetch(`${apiBaseUrl}/api/customers`, { signal: AbortSignal.timeout(2500) });
           if (res.ok) {
-            const serverData = await res.json();
+            const rawData = await res.json();
+            const serverData = Array.isArray(rawData) ? rawData : (rawData.data || []);
             if (JSON.stringify(customers) !== JSON.stringify(serverData)) {
               customers = serverData;
               localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
@@ -1505,6 +1621,7 @@
     }, 3500);
   }
 
+  // 6. BUSINESS CALCULATION (KPIs)
   function updateKPIs() {
     let totalRevenue = 0;
     let totalDeposit = 0;
@@ -1548,7 +1665,7 @@
 
   function openNewCustomerModal() {
     resetForm();
-    document.getElementById("modalFormTitle").innerText = "➕ Nhập Khách Hàng Mới";
+    document.getElementById("modalFormTitle").innerText = "➕ Nhập Hồ Sơ Khách Hàng Mới";
     document.getElementById("formModal").classList.add("active");
   }
 
@@ -1584,7 +1701,7 @@
     renderTable();
   }
 
-  // RENDER BẢNG VÀ CARDS
+  // 7. RENDER ENGINE (DESKTOP & MOBILE)
   function renderTable() {
     const thead = document.getElementById("tableHead");
     const tbody = document.getElementById("tableBody");
@@ -1605,7 +1722,7 @@
 
     document.getElementById("displayCount").innerText = filtered.length;
 
-    // Desktop Thead
+    // Desktop Header
     if (viewMode === 'compact') {
       thead.innerHTML = `
         <tr>
@@ -1613,8 +1730,8 @@
           <th>Khách Hàng</th>
           <th>Thiết Bị & IMEI</th>
           <th style="text-align:right;">Giá Gốc</th>
-          <th style="text-align:right;">Tiền Cọc (Đã Thu)</th>
-          <th style="text-align:center;">Tiến Độ Kỳ</th>
+          <th style="text-align:right;" class="col-highlight">Tiền Cọc (Đã Thu)</th>
+          <th style="text-align:center;" class="col-highlight">Tiến Độ Kỳ</th>
           <th style="text-align:right;">Dư Nợ Còn Lại</th>
           <th style="text-align:right;">Mỗi Kỳ Góp</th>
           <th style="text-align:center; width:95px;">Thao Tác</th>
@@ -1634,8 +1751,8 @@
           <th>Số Lượng</th>
           <th>Tình Trạng</th>
           <th style="text-align:right;">Giá Gốc</th>
-          <th style="text-align:right;">Tiền Cọc (Đã Thu)</th>
-          <th style="text-align:center;">Tiến Độ Kỳ</th>
+          <th style="text-align:right;" class="col-highlight">Tiền Cọc (Đã Thu)</th>
+          <th style="text-align:center;" class="col-highlight">Tiến Độ Kỳ</th>
           <th style="text-align:right;">Dư Nợ Còn Lại</th>
           <th style="text-align:right;">Mỗi Kỳ Góp</th>
           <th style="text-align:center; width:95px;">Thao Tác</th>
@@ -1670,7 +1787,7 @@
       const progressPercent = (c.terms > 0) ? Math.min(100, Math.round((paidCount / c.terms) * 100)) : 0;
       const initials = getInitials(c.name);
 
-      // 1. DESKTOP ROW
+      // DESKTOP ROW
       const trMain = document.createElement("tr");
       trMain.className = `customer-row ${isExpanded ? 'is-expanded' : ''}`;
       trMain.onclick = (e) => toggleCustomerExpand(c.id, e);
@@ -1759,7 +1876,7 @@
       }
       tbody.appendChild(trMain);
 
-      // DESKTOP EXPANDED ROW
+      // DESKTOP EXPANDED ACCORDION
       if (isExpanded) {
         const trDetail = document.createElement("tr");
         trDetail.className = "detail-row";
@@ -1824,7 +1941,7 @@
         tbody.appendChild(trDetail);
       }
 
-      // 2. MOBILE CARD VIEW (THIẾT KẾ APPLE WALLET LUXURY)
+      // MOBILE WALLET CARD
       const mCard = document.createElement("div");
       mCard.className = `m-card ${paidCount === c.terms ? 'is-done' : ''}`;
       mCard.innerHTML = `
@@ -1919,7 +2036,7 @@
     });
   }
 
-  // Thu tiền 1 kỳ
+  // 8. PAYMENT ACTIONS (OPTIMISTIC UI WITH INSTANT TOAST)
   async function markPaid(customerId, termNumber) {
     const c = customers.find(item => item.id === customerId);
     if (!c || !c.schedule) return;
@@ -1940,6 +2057,7 @@
     localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
     updateKPIs();
     renderTable();
+    ToastService.show(`Đã thu ${formatMoney(termItem.amount)} cho Kỳ ${termNumber} (${c.name})!`, "success");
 
     if (apiBaseUrl) {
       try {
@@ -1952,7 +2070,6 @@
     }
   }
 
-  // Hủy thu tiền 1 kỳ
   async function undoPayment(customerId, termNumber) {
     const c = customers.find(item => item.id === customerId);
     if (!c || !c.schedule) return;
@@ -1968,6 +2085,7 @@
     localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
     updateKPIs();
     renderTable();
+    ToastService.show(`Đã hủy thu Kỳ ${termNumber} (${c.name})!`, "info");
 
     if (apiBaseUrl) {
       try {
@@ -1980,7 +2098,7 @@
     }
   }
 
-  // Lưu khách hàng
+  // 9. FORM SUBMISSION CONTROLLER
   async function handleSaveCustomer(e) {
     if (e && e.preventDefault) e.preventDefault();
 
@@ -1996,13 +2114,18 @@
     const deviceModel = document.getElementById("custDeviceModel").value.trim() || `${model} - ${color} - ${capacity}`;
     const price = parseFloat(document.getElementById("custPrice").value) || 0;
     const deposit = parseFloat(document.getElementById("custDeposit").value) || 0;
-    const terms = parseInt(document.getElementById("custTerms").value) || 9;
+    const terms = parseInt(document.getElementById("custTerms").value, 10) || 9;
     const monthlyAmount = parseFloat(document.getElementById("custMonthlyAmount").value) || 0;
     const startDate = document.getElementById("custDate").value || new Date().toISOString().split('T')[0];
     const notes = document.getElementById("custNotes").value.trim();
 
+    if (!name || !phone || !model) {
+      ToastService.show("Vui lòng nhập đầy đủ các trường bắt buộc (*)", "error");
+      return;
+    }
+
     if (deposit > price) {
-      alert("Tiền cọc (trả trước) không thể lớn hơn giá gốc máy!");
+      ToastService.show("Tiền cọc không thể lớn hơn giá gốc máy!", "error");
       return;
     }
 
@@ -2060,7 +2183,7 @@
 
     closeFormModal();
     resetForm();
-    alert("Đã lưu thông tin khách hàng thành công!");
+    ToastService.show(`Đã lưu thành công khách hàng: ${name}!`, "success");
   }
 
   function resetForm() {
@@ -2107,6 +2230,7 @@
       localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
       updateKPIs();
       renderTable();
+      ToastService.show(`Đã xóa khách hàng: ${c.name}`, "info");
 
       if (apiBaseUrl) {
         try {
@@ -2122,6 +2246,7 @@
     a.href = URL.createObjectURL(blob);
     a.download = "database.json";
     a.click();
+    ToastService.show("Đã tải file database.json về máy tính!", "success");
   }
 
   function exportToCSV() {
@@ -2140,9 +2265,10 @@
     a.href = URL.createObjectURL(blob);
     a.download = `danh_sach_khach_tra_gop_${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
+    ToastService.show("Đã xuất file Excel (CSV) thành công!", "success");
   }
 
-  // Khởi tạo theme và ngày mặc định
+  // 10. INITIALIZATION
   initTheme();
   document.getElementById("custDate").value = new Date().toISOString().split('T')[0];
   syncWithServer();
