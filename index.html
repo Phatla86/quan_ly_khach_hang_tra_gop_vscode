@@ -2,97 +2,134 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Phần Mềm Quản Lý Khách Hàng Mua Máy & Trả Góp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Quản Lý Khách Hàng Mua Máy & Trả Góp</title>
   <style>
     :root {
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
       --primary-light: #eff6ff;
-      --navy-title: #0369a1;
-      --navy-bg: #e0f2fe;
+      --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      --accent: #0ea5e9;
       --bg: #f8fafc;
       --card-bg: #ffffff;
       --border: #e2e8f0;
-      --border-dark: #cbd5e1;
+      --border-light: #f1f5f9;
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --success: #16a34a;
-      --success-bg: #dcfce7;
-      --warning: #d97706;
-      --warning-bg: #fef3c7;
-      --danger: #dc2626;
-      --danger-bg: #fee2e2;
-      --radius: 10px;
-      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --text-sub: #94a3b8;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --warning: #f59e0b;
+      --warning-bg: #fffbeb;
+      --danger: #ef4444;
+      --danger-bg: #fef2f2;
+      --radius-sm: 8px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 8px -2px rgba(15, 23, 42, 0.04);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
       background-color: var(--bg);
       color: var(--text-main);
-      padding: 16px;
-      font-size: 13.5px;
-      line-height: 1.45;
+      padding: 20px;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
     .container {
-      max-width: 1720px;
+      max-width: 1680px;
       margin: 0 auto;
     }
 
-    /* Header */
+    /* TOP HEADER */
     header {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .brand-icon {
-      width: 38px;
-      height: 38px;
+      width: 44px;
+      height: 44px;
       background: linear-gradient(135deg, #1e293b, #0f172a);
       color: #fff;
-      border-radius: 9px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 22px;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
       flex-shrink: 0;
     }
 
     .brand-text h1 {
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 19px;
+      font-weight: 800;
       color: var(--text-main);
-      letter-spacing: -0.3px;
+      letter-spacing: -0.4px;
     }
 
     .brand-text p {
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--text-muted);
       display: flex;
       align-items: center;
       gap: 6px;
-      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 11.5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .status-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
     .header-actions {
@@ -102,161 +139,135 @@
       flex-wrap: wrap;
     }
 
-    /* KPI Summary */
+    /* KPI OVERVIEW CARDS */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 16px;
+      margin-bottom: 24px;
     }
 
     .kpi-card {
       background: var(--card-bg);
-      padding: 14px 16px;
-      border-radius: var(--radius);
+      padding: 18px 20px;
+      border-radius: var(--radius-lg);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
+    .kpi-card:hover {
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--border);
+    }
+
+    .kpi-card.c-primary::before { background: var(--primary); }
+    .kpi-card.c-success::before { background: var(--success); }
+    .kpi-card.c-warning::before { background: var(--warning); }
+    .kpi-card.c-danger::before { background: var(--danger); }
+
     .kpi-title {
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 11.5px;
+      font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .kpi-value {
-      font-size: 19px;
-      font-weight: 700;
+      font-size: 22px;
+      font-weight: 800;
       color: var(--text-main);
       font-variant-numeric: tabular-nums;
+      margin: 4px 0 2px 0;
+      letter-spacing: -0.3px;
     }
 
     .kpi-sub {
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
-    /* Layout Controller */
-    .layout-wrapper {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 16px;
-      align-items: start;
-      transition: all 0.25s ease;
-    }
-
-    .layout-wrapper.full-width {
-      grid-template-columns: 1fr;
-    }
-
-    .layout-wrapper.full-width #sidebarForm {
-      display: none;
-    }
-
-    /* Cards */
-    .card {
+    /* MAIN CONTAINER */
+    .main-box {
       background: var(--card-bg);
-      border-radius: var(--radius);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      padding: 16px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
     }
 
-    .card-header {
+    .main-box-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 12px;
+      background: #ffffff;
     }
 
-    .card-header h2 {
-      font-size: 15px;
+    .main-box-head h2 {
+      font-size: 16px;
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 6px;
-      color: #1e293b;
-    }
-
-    /* Form Styles */
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #334155;
-    }
-
-    .form-group label .required {
-      color: var(--danger);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 8px 10px;
-      font-size: 13px;
-      border: 1px solid var(--border-dark);
-      border-radius: 6px;
-      background: #ffffff;
-      color: var(--text-main);
-      transition: border 0.15s;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 8px;
+      color: var(--text-main);
     }
 
-    .form-row-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 6px;
+    .head-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    /* Buttons */
+    /* BUTTONS */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-      padding: 7px 12px;
-      font-size: 12.5px;
+      gap: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
       font-weight: 600;
-      border-radius: 6px;
+      border-radius: var(--radius-sm);
       border: 1px solid transparent;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.15s ease;
       white-space: nowrap;
+      text-decoration: none;
     }
 
     .btn-primary {
-      background: var(--primary);
-      color: white;
-      width: 100%;
+      background: var(--primary-gradient);
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
     }
 
     .btn-primary:hover {
-      background: var(--primary-hover);
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.35);
     }
 
     .btn-secondary {
@@ -271,25 +282,25 @@
     }
 
     .btn-secondary.active {
-      background: #eff6ff;
+      background: var(--primary-light);
       border-color: var(--primary);
       color: var(--primary);
     }
 
     .btn-sm {
-      padding: 4px 8px;
-      font-size: 11.5px;
-      border-radius: 5px;
+      padding: 5px 9px;
+      font-size: 12px;
+      border-radius: 6px;
     }
 
     .btn-danger {
       background: #fee2e2;
       color: #dc2626;
-      border-color: #fca5a5;
+      border-color: #fecaca;
     }
 
     .btn-danger:hover {
-      background: #fecaca;
+      background: #fca5a5;
     }
 
     .btn-edit {
@@ -302,49 +313,53 @@
       background: #dbeafe;
     }
 
-    /* Table Toolbar */
+    /* TOOLBAR */
     .table-toolbar {
+      padding: 12px 20px;
+      background: #fafbfc;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .toolbar-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .toolbar-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
+    .search-box {
+      position: relative;
+      width: 320px;
+      max-width: 100%;
     }
 
     .search-input {
-      width: 250px;
-      max-width: 100%;
-      padding: 7px 10px;
-      font-size: 12.5px;
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      font-size: 13px;
       border: 1px solid var(--border-dark);
-      border-radius: 6px;
+      border-radius: var(--radius-sm);
       outline: none;
+      background: #ffffff;
+      transition: all 0.2s;
     }
 
     .search-input:focus {
       border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
-    /* Table Responsive & Scaling */
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    /* DESKTOP TABLE VIEW */
     .table-responsive {
       overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 8px;
       background: #ffffff;
       -webkit-overflow-scrolling: touch;
     }
@@ -353,29 +368,25 @@
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 12.5px;
+      font-size: 13px;
     }
 
     thead th {
       background: #f8fafc;
-      padding: 9px 10px;
-      font-weight: 600;
+      padding: 11px 14px;
+      font-weight: 700;
       color: #64748b;
       font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
       border-bottom: 1px solid var(--border);
       border-right: 1px solid #f1f5f9;
       user-select: none;
       white-space: nowrap;
     }
 
-    thead th .col-icon {
-      font-size: 10px;
-      color: #94a3b8;
-      margin-right: 3px;
-    }
-
     tbody td {
-      padding: 9px 10px;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--border);
       border-right: 1px solid #f8fafc;
       color: #1e293b;
@@ -389,20 +400,20 @@
     }
 
     tbody tr.customer-row:hover {
-      background-color: #f1f5f9;
+      background-color: #f8fafc;
     }
 
     tbody tr.customer-row.is-expanded {
-      background-color: #f8fafc;
+      background-color: #f1f5f9;
       border-left: 3px solid var(--primary);
     }
 
     .expand-chevron {
       display: inline-block;
       transition: transform 0.2s ease;
-      color: #64748b;
-      font-size: 9px;
-      margin-right: 4px;
+      color: #94a3b8;
+      font-size: 10px;
+      margin-right: 6px;
     }
 
     .is-expanded .expand-chevron {
@@ -410,7 +421,7 @@
       color: var(--primary);
     }
 
-    /* Smart Compact Column Styles */
+    /* CUSTOMER CELL */
     .cust-cell {
       display: flex;
       flex-direction: column;
@@ -420,14 +431,18 @@
     .cust-name {
       font-weight: 700;
       color: var(--text-main);
-      font-size: 13px;
+      font-size: 13.5px;
     }
 
     .cust-phone {
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
+    /* DEVICE CELL */
     .device-cell {
       display: flex;
       flex-direction: column;
@@ -450,47 +465,30 @@
       display: inline-flex;
       align-items: center;
       padding: 1px 6px;
-      border-radius: 10px;
-      font-size: 10.5px;
+      border-radius: 6px;
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.2px;
     }
 
     .tag-storage { background: #e0e7ff; color: #3730a3; }
     .tag-condition { background: #fef3c7; color: #b45309; }
-    .tag-qty { background: #f1f5f9; color: #475569; }
     .tag-color { background: #f1f5f9; color: #334155; }
-    .tag-imei { font-family: monospace; font-size: 10.5px; color: #64748b; }
-
-    .tag-model-box {
-      background: #f1f5f9;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: #334155;
-      font-size: 11.5px;
-      max-width: 220px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .col-highlight {
-      background-color: #f0f7ff;
-      font-weight: 600;
-      color: #1e40af;
-    }
+    .tag-imei { font-family: monospace; font-size: 11px; color: #64748b; }
 
     .money {
       font-variant-numeric: tabular-nums;
-      font-weight: 600;
-      font-size: 12.5px;
+      font-weight: 700;
     }
 
     .text-success { color: var(--success); }
     .text-primary { color: var(--primary); }
     .text-danger { color: var(--danger); }
 
-    /* EXPANDABLE DETAIL ROW */
+    .col-highlight {
+      background-color: #fafcff;
+    }
+
+    /* EXPANDABLE DETAIL CONTAINER */
     .detail-row td {
       padding: 0;
       background: #f8fafc;
@@ -498,7 +496,7 @@
     }
 
     .detail-container {
-      padding: 12px 14px 16px 14px;
+      padding: 14px 20px 20px 20px;
       border-bottom: 2px solid #cbd5e1;
       border-top: 1px solid #e2e8f0;
       background: #f8fafc;
@@ -508,48 +506,49 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
     }
 
     .detail-title {
-      font-size: 13.5px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 800;
       color: var(--navy-title);
       display: flex;
       align-items: center;
       gap: 6px;
       text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
     .detail-badge-terms {
       background: var(--navy-bg);
       color: var(--navy-title);
       padding: 3px 12px;
-      border-radius: 16px;
-      font-size: 11.5px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: 700;
       border: 1px solid #bae6fd;
     }
 
     .schedule-table-wrap {
       background: #ffffff;
-      border-radius: 7px;
+      border-radius: var(--radius-sm);
       border: 1px solid var(--border);
       overflow-x: auto;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      box-shadow: var(--shadow-sm);
     }
 
     .schedule-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12px;
+      font-size: 12.5px;
     }
 
     .schedule-table thead th {
       background: #f8fafc;
-      padding: 8px 10px;
+      padding: 10px 12px;
       color: #64748b;
       font-weight: 700;
       font-size: 11px;
@@ -557,7 +556,7 @@
     }
 
     .schedule-table tbody td {
-      padding: 8px 10px;
+      padding: 9px 12px;
       border-bottom: 1px solid #f1f5f9;
       color: #1e293b;
       white-space: nowrap;
@@ -567,28 +566,32 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 2px 8px;
+      padding: 3px 8px;
       border-radius: 12px;
       font-size: 11px;
       font-weight: 600;
     }
 
     .status-upcoming { background: #e0f2fe; color: #0284c7; }
-    .status-upcoming .dot { width: 6px; height: 6px; border-radius: 50%; background: #0284c7; display: inline-block; }
+    .status-upcoming .dot { width: 5px; height: 5px; border-radius: 50%; background: #0284c7; display: inline-block; }
     .status-paid { background: #dcfce7; color: #16a34a; }
-    .status-paid .dot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; display: inline-block; }
-    .status-overdue { background: #fee2e2; color: #dc2626; }
-    .status-overdue .dot { width: 6px; height: 6px; border-radius: 50%; background: #dc2626; display: inline-block; }
+    .status-paid .dot { width: 5px; height: 5px; border-radius: 50%; background: #16a34a; display: inline-block; }
 
     .btn-pay-action {
-      padding: 2px 7px;
-      font-size: 11px;
+      padding: 3px 9px;
+      font-size: 11.5px;
       font-weight: 600;
-      border-radius: 4px;
+      border-radius: 5px;
       cursor: pointer;
       border: 1px solid #cbd5e1;
       background: #ffffff;
       color: #334155;
+      transition: all 0.15s;
+    }
+
+    .btn-pay-action:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
     }
 
     .btn-pay-action.paid {
@@ -597,17 +600,205 @@
       color: #16a34a;
     }
 
-    /* Modal Form for Mobile / Quick Add */
+    /* =======================================================
+       MOBILE CARDS VIEW (THIẾT KẾ RIÊNG TUYỆT ĐẸP CHO ĐIỆN THOẠI)
+       ======================================================= */
+    .mobile-cards-view {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      padding: 14px;
+      background: #f8fafc;
+    }
+
+    .m-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: 0 2px 5px rgba(15, 23, 42, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+
+    .m-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .m-cust-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .m-phone-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      background: #eff6ff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-top: 3px;
+    }
+
+    .m-device-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .m-device-title {
+      font-weight: 700;
+      font-size: 13.5px;
+      color: #0f172a;
+    }
+
+    .m-device-tags {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .m-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .m-metric-item {
+      background: #f8fafc;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .m-metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .m-metric-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-main);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-metric-sub {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    /* Progress bar */
+    .m-progress-wrap {
+      margin-top: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .m-progress-bar-bg {
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .m-progress-bar-fill {
+      height: 100%;
+      background: var(--primary-gradient);
+      border-radius: 10px;
+      transition: width 0.3s;
+    }
+
+    .m-progress-bar-fill.done {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .m-card-footer {
+      display: flex;
+      gap: 8px;
+      border-top: 1px solid var(--border-light);
+      padding-top: 12px;
+    }
+
+    .m-card-footer .btn {
+      flex: 1;
+    }
+
+    /* Mobile schedule expanded list */
+    .m-schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+      border-top: 1px dashed var(--border-dark);
+      padding-top: 12px;
+    }
+
+    .m-schedule-item {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .m-schedule-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .m-schedule-term {
+      font-weight: 700;
+      font-size: 13px;
+      color: #0f172a;
+    }
+
+    .m-schedule-date {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .m-schedule-money {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 13px;
+    }
+
+    /* MODAL FORM */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.65);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 1000;
       padding: 16px;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(4px);
     }
 
     .modal-overlay.active {
@@ -616,13 +807,13 @@
 
     .modal-card {
       background: #fff;
-      border-radius: 12px;
-      max-width: 520px;
+      border-radius: var(--radius-lg);
+      max-width: 560px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: var(--shadow-md);
-      padding: 20px;
+      box-shadow: var(--shadow-lg);
+      padding: 22px;
     }
 
     .modal-card-header {
@@ -630,132 +821,148 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 12px;
-      margin-bottom: 14px;
+      padding-bottom: 14px;
+      margin-bottom: 16px;
     }
 
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      color: #94a3b8;
-    }
-
-    /* Mobile Cards View (Hiện khi màn hình nhỏ) */
-    .mobile-cards-view {
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .customer-card-mobile {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-    .m-card-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
-
-    .m-cust-name {
-      font-size: 15px;
-      font-weight: 700;
+    .modal-card-header h3 {
+      font-size: 17px;
+      font-weight: 800;
       color: var(--text-main);
     }
 
-    .m-cust-phone {
-      font-size: 13px;
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .m-device-box {
-      background: #f8fafc;
-      padding: 8px 10px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      font-size: 12.5px;
-    }
-
-    .m-finance-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+    .close-btn {
       background: #f1f5f9;
-      padding: 10px;
-      border-radius: 7px;
-      margin-bottom: 10px;
-      font-size: 12px;
-    }
-
-    .m-finance-item {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .m-finance-label {
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
       color: #64748b;
-      font-size: 11px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
     }
 
-    .m-finance-val {
-      font-weight: 700;
-      font-size: 13px;
+    .close-btn:hover {
+      background: #e2e8f0;
       color: #0f172a;
     }
 
-    /* RESPONSIVE BREAKPOINTS */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #334155;
+    }
+
+    .form-group label .required {
+      color: var(--danger);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 13.5px;
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--text-main);
+      transition: all 0.15s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* RESPONSIVE MEDIA QUERIES */
     @media (max-width: 1024px) {
       .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
-      }
-      .layout-wrapper {
-        grid-template-columns: 1fr;
-      }
-      #sidebarForm {
-        display: none; /* Mặc định ẩn sidebar trên màn hình hẹp để bảng rộng 100% */
-      }
-      .btn-toggle-form {
-        display: inline-flex !important;
       }
     }
 
     @media (max-width: 768px) {
       body {
-        padding: 10px;
+        padding: 12px;
       }
       header {
-        margin-bottom: 12px;
+        padding: 14px;
+        margin-bottom: 14px;
+      }
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
       }
       .brand-text h1 {
         font-size: 16px;
       }
+      .header-actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+      .header-actions .btn-primary {
+        flex: 1;
+      }
       .kpi-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        gap: 10px;
+        margin-bottom: 16px;
       }
       .kpi-card {
-        padding: 10px 12px;
+        padding: 12px 14px;
       }
       .kpi-value {
-        font-size: 16px;
+        font-size: 17px;
       }
-      .desktop-table-view {
-        display: none; /* Ẩn bảng ngang trên điện thoại */
+      .main-box-head {
+        padding: 12px 14px;
       }
-      .mobile-cards-view {
-        display: flex; /* Hiện dạng thẻ thân thiện trên điện thoại */
+      .table-toolbar {
+        padding: 10px 14px;
       }
-      .search-input {
+      .search-box {
         width: 100%;
+      }
+      /* ẨN BẢNG NGANG TRÊN ĐIỆN THOẠI VÌ QUÁ DÀI */
+      .desktop-table-view {
+        display: none !important;
+      }
+      /* HIỆN THẺ MOBILE CARD CHUYÊN NGHIỆP */
+      .mobile-cards-view {
+        display: flex !important;
+      }
+      .modal-card {
+        padding: 16px;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .form-row-3 {
+        grid-template-columns: 1fr 1fr;
       }
     }
   </style>
@@ -763,267 +970,259 @@
 <body>
 
 <div class="container">
-  <!-- Header -->
+  <!-- HEADER -->
   <header>
     <div class="brand">
       <div class="brand-icon">📱</div>
       <div class="brand-text">
-        <h1>Phần Mềm Quản Lý Khách Hàng Mua Máy & Trả Góp</h1>
+        <h1>Quản Lý Khách Hàng Mua Máy & Trả Góp</h1>
         <p>
-          <span id="serverStatusBadge" style="display:inline-flex; align-items:center; gap:5px; font-weight:600; font-size:11.5px; padding:2px 8px; border-radius:12px; background:#dcfce7; color:#16a34a;">
-            <span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block;"></span> Đồng bộ file database.json
+          <span class="status-badge" id="serverStatusBadge">
+            <span class="dot"></span> Đồng bộ Cloud Render
           </span>
         </p>
       </div>
     </div>
     <div class="header-actions">
-      <button class="btn btn-primary" onclick="openNewCustomerModal()" style="width:auto;">
+      <button class="btn btn-primary" onclick="openNewCustomerModal()">
         ➕ Nhập Khách Mới
       </button>
       <button class="btn btn-secondary btn-sm" onclick="syncWithServer(true)" title="Làm mới dữ liệu từ server">
-        🔄 Đồng Bộ Ngay
+        🔄 Đồng Bộ
       </button>
-      <button class="btn btn-secondary btn-sm" onclick="downloadServerDatabase()" title="Tải file database.json về chép vào VS Code">
-        📥 Tải DB Về VS Code
-      </button>
-      <button class="btn btn-secondary btn-sm" onclick="exportToCSV()">
+      <button class="btn btn-secondary btn-sm" onclick="exportToCSV()" title="Xuất dữ liệu ra file Excel">
         📥 Xuất Excel
       </button>
-      <button class="btn btn-secondary btn-sm" onclick="exportJSON()">
-        💾 Sao Lưu
+      <button class="btn btn-secondary btn-sm" onclick="downloadServerDatabase()" title="Tải file database.json về máy">
+        💾 Tải DB
       </button>
-      <label class="btn btn-secondary btn-sm" style="cursor:pointer; margin-bottom:0;">
-        📤 Phục Hồi
-        <input type="file" style="display:none;" onchange="importJSON(event)" accept=".json">
-      </label>
     </div>
   </header>
 
-  <!-- KPI Overview -->
+  <!-- 4 THẺ THỐNG KÊ KPI CAO CẤP -->
   <div class="kpi-grid">
-    <div class="kpi-card">
-      <span class="kpi-title">Tổng Khách Hàng</span>
+    <div class="kpi-card c-primary">
+      <span class="kpi-title">👥 Tổng Khách Hàng</span>
       <span class="kpi-value" id="kpiTotalCustomers">0</span>
       <span class="kpi-sub">Hồ sơ trong hệ thống</span>
     </div>
-    <div class="kpi-card">
-      <span class="kpi-title">Tổng Giá Gốc Máy Bán</span>
+    <div class="kpi-card c-primary">
+      <span class="kpi-title">💰 Tổng Giá Gốc Bán Ra</span>
       <span class="kpi-value text-primary" id="kpiTotalRevenue">0 đ</span>
       <span class="kpi-sub">Doanh số niêm yết</span>
     </div>
-    <div class="kpi-card">
-      <span class="kpi-title">Đã Thu Cọc (Trả Trước)</span>
+    <div class="kpi-card c-success">
+      <span class="kpi-title">💵 Đã Thu (Cọc + Kỳ Góp)</span>
       <span class="kpi-value text-success" id="kpiTotalDeposit">0 đ</span>
-      <span class="kpi-sub">Tiền mặt nhận ngay</span>
+      <span class="kpi-sub" id="kpiDepositSub">Tổng tiền mặt thực tế đã nhận</span>
     </div>
-    <div class="kpi-card">
-      <span class="kpi-title">Tổng Tiền Thu Mỗi Kỳ</span>
-      <span class="kpi-value text-danger" id="kpiTotalMonthly">0 đ</span>
-      <span class="kpi-sub">Khoản thu hàng tháng</span>
+    <div class="kpi-card c-danger">
+      <span class="kpi-title">📉 Dư Nợ Còn Lại Cần Thu</span>
+      <span class="kpi-value text-danger" id="kpiTotalRemaining">0 đ</span>
+      <span class="kpi-sub">Khoản trả góp chưa thu xong</span>
     </div>
   </div>
 
-  <!-- Main Layout -->
-  <div class="layout-wrapper full-width" id="mainLayout">
-    <!-- CỘT FORM (Có thể ẩn/hiện hoặc mở dạng modal) -->
-    <div class="card" id="sidebarForm">
-      <div class="card-header">
-        <h2 id="sidebarFormTitle">📝 Nhập Hồ Sơ Khách Hàng</h2>
-        <button class="btn btn-secondary btn-sm" onclick="toggleSidebarForm()">Đóng form</button>
+  <!-- BẢNG / DANH SÁCH KHÁCH HÀNG -->
+  <div class="main-box">
+    <div class="main-box-head">
+      <h2><span>📋</span> Danh Sách Khách Hàng & Dư Nợ</h2>
+      <div class="head-controls">
+        <button class="btn btn-secondary btn-sm active" id="btnViewCompact" onclick="setViewMode('compact')">
+          👁️ Vừa Màn Hình
+        </button>
+        <button class="btn btn-secondary btn-sm" id="btnViewFull" onclick="setViewMode('full')">
+          📑 Đầy Đủ Cột
+        </button>
       </div>
-      <div id="formContainerSidebar">
-        <!-- Form sẽ được render ở đây hoặc modal -->
+    </div>
+
+    <div class="table-toolbar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Tìm tên khách, SĐT, Model, IMEI..." oninput="renderTable()">
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <select id="filterTerm" class="form-control" style="width:120px; padding:6px 10px; font-size:12px;" onchange="renderTable()">
+          <option value="ALL">Tất cả kỳ</option>
+          <option value="6">6 kỳ</option>
+          <option value="9">9 kỳ</option>
+          <option value="12">12 kỳ</option>
+        </select>
+        <span style="font-size:12.5px; color:var(--text-muted);">
+          Tổng: <b id="displayCount" style="color:var(--text-main);">0</b> hồ sơ
+        </span>
       </div>
     </div>
 
-    <!-- CỘT BẢNG QUẢN LÝ (Mặc định 100% bề ngang để xem trọn vẹn không cần cuộn) -->
-    <div class="card">
-      <div class="card-header">
-        <h2>
-          <span>📋</span> Danh Sách Khách Hàng Mua Máy
-        </h2>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <!-- Nút chuyển đổi giao diện: Gọn (Vừa màn hình) vs Đầy đủ -->
-          <button class="btn btn-secondary btn-sm active" id="btnViewCompact" onclick="setViewMode('compact')" title="Xem vừa màn hình không cần kéo qua">
-            👁️ Vừa Màn Hình
-          </button>
-          <button class="btn btn-secondary btn-sm" id="btnViewFull" onclick="setViewMode('full')" title="Xem tất cả các cột chi tiết">
-            📑 Đầy Đủ Cột
-          </button>
-          <button class="btn btn-secondary btn-sm" id="btnToggleSidebar" onclick="toggleSidebarForm()" title="Mở form bên cạnh">
-            📝 Hiện Form Cột Trái
-          </button>
-        </div>
-      </div>
-
-      <div class="table-toolbar">
-        <div class="toolbar-left">
-          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Tìm kiếm tên, SĐT, Model, IMEI..." oninput="renderTable()">
-          <select id="filterTerm" class="form-control" style="width:115px; padding:6px 8px; font-size:12px;" onchange="renderTable()">
-            <option value="ALL">Tất cả kỳ</option>
-            <option value="6">6 kỳ</option>
-            <option value="9">9 kỳ</option>
-            <option value="12">12 kỳ</option>
-          </select>
-        </div>
-        <div class="toolbar-right">
-          <span style="font-size:12px; color:var(--text-muted);">
-            Đang hiển thị: <b id="displayCount">0</b> hồ sơ
-          </span>
-        </div>
-      </div>
-
-      <!-- 1. GIAO DIỆN BẢNG DÀNH CHO MÁY TÍNH (DESKTOP / LAPTOP) -->
-      <div class="desktop-table-view">
-        <div class="table-responsive">
-          <table id="mainCustomerTable">
-            <thead id="tableHead">
-              <!-- Render Header via JS tùy theo chế độ Gọn hay Đầy đủ -->
-            </thead>
-            <tbody id="tableBody">
-              <!-- Render via JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- 2. GIAO DIỆN THẺ DÀNH CHO ĐIỆN THOẠI (MOBILE PHONES) -->
-      <div class="mobile-cards-view" id="mobileCardsContainer">
-        <!-- Render thẻ khách hàng trên điện thoại via JS -->
+    <!-- 1. GIAO DIỆN DESKTOP / LAPTOP (BẢNG TRÀN VIỀN KHÔNG CẦN CUỘN) -->
+    <div class="desktop-table-view">
+      <div class="table-responsive">
+        <table>
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
       </div>
     </div>
+
+    <!-- 2. GIAO DIỆN ĐIỆN THOẠI (THẺ MOBILE APPLE CARD ĐẸP MẮT) -->
+    <div class="mobile-cards-view" id="mobileCardsContainer"></div>
   </div>
 </div>
 
-<!-- Modal Nhập/Sửa Khách Hàng (Tối ưu dùng mượt trên cả điện thoại & máy tính) -->
+<!-- MODAL POPUP FORM NHẬP / SỬA KHÁCH HÀNG -->
 <div class="modal-overlay" id="formModal">
   <div class="modal-card">
     <div class="modal-card-header">
-      <h3 id="modalFormTitle" style="font-size:16px; font-weight:700;">➕ Nhập Khách Hàng Mới</h3>
+      <h3 id="modalFormTitle">➕ Nhập Hồ Sơ Khách Hàng Mới</h3>
       <button class="close-btn" onclick="closeFormModal()">×</button>
     </div>
-    <div id="formContainerModal">
-      <!-- HTML Form được nhúng vào đây -->
-    </div>
+    
+    <form id="customerForm" onsubmit="handleSaveCustomer(event); return false;">
+      <input type="hidden" id="editCustomerId">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Họ Tên Khách Hàng <span class="required">*</span></label>
+          <input type="text" id="custName" class="form-control" placeholder="NGUYỄN ANH KHOA" required>
+        </div>
+        <div class="form-group">
+          <label>Số Điện Thoại <span class="required">*</span></label>
+          <input type="tel" id="custPhone" class="form-control" placeholder="0937206401" inputmode="tel" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Model Máy <span class="required">*</span></label>
+          <input type="text" id="custModel" class="form-control" placeholder="iPhone 17" required oninput="autoBuildDeviceName()">
+        </div>
+        <div class="form-group">
+          <label>Dung Lượng</label>
+          <select id="custCapacity" class="form-control" onchange="autoBuildDeviceName()">
+            <option value="128GB">128GB</option>
+            <option value="256GB" selected>256GB</option>
+            <option value="512GB">512GB</option>
+            <option value="1TB">1TB</option>
+            <option value="64GB">64GB</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>Màu Sắc</label>
+          <input type="text" id="custColor" class="form-control" placeholder="Black" oninput="autoBuildDeviceName()">
+        </div>
+        <div class="form-group">
+          <label>Số Lượng</label>
+          <input type="text" id="custQty" class="form-control" value="01">
+        </div>
+        <div class="form-group">
+          <label>Tình Trạng</label>
+          <select id="custCondition" class="form-control">
+            <option value="99%">99%</option>
+            <option value="New 100%">New 100%</option>
+            <option value="98%">98%</option>
+            <option value="95%">95%</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mã IMEI (15 số)</label>
+        <input type="text" id="custImei" class="form-control" placeholder="352000937283343" oninput="autoBuildDeviceName()">
+      </div>
+
+      <div class="form-group">
+        <label>Model Thiết Bị (Tự Động Ghép Tên)</label>
+        <input type="text" id="custDeviceModel" class="form-control" placeholder="iPhone 17 - Black - 3343">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Giá Gốc (VNĐ) <span class="required">*</span></label>
+          <input type="number" id="custPrice" class="form-control" min="0" step="any" inputmode="numeric" placeholder="21390000" required>
+        </div>
+        <div class="form-group">
+          <label>Tiền Cọc (Đã Trả Trước) <span class="required">*</span></label>
+          <input type="number" id="custDeposit" class="form-control" min="0" step="any" inputmode="numeric" placeholder="10695000" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Số Kỳ (Tháng Góp) <span class="required">*</span></label>
+          <input type="number" id="custTerms" class="form-control" min="1" step="1" inputmode="numeric" placeholder="9" value="9" required>
+        </div>
+        <div class="form-group">
+          <label>Tiền Mỗi Kỳ (VNĐ) <span class="required">*</span></label>
+          <input type="number" id="custMonthlyAmount" class="form-control" min="0" step="any" inputmode="numeric" placeholder="1841000" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Ngày Bắt Đầu / Mua Máy</label>
+          <input type="date" id="custDate" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Ghi Chú</label>
+          <input type="text" id="custNotes" class="form-control" placeholder="Ghi chú thêm...">
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button type="submit" class="btn btn-primary" style="flex:1;">
+          💾 Lưu Thông Tin Khách Hàng
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="closeFormModal()">
+          Đóng
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 
-<!-- TEMPLATE FORM NHẬP LIỆU GỐC -->
-<template id="formTemplate">
-  <form id="customerForm" onsubmit="handleSaveCustomer(event); return false;">
-    <input type="hidden" id="editCustomerId">
-
-    <div class="form-row">
-      <div class="form-group">
-        <label>Họ Tên Khách Hàng <span class="required">*</span></label>
-        <input type="text" id="custName" class="form-control" placeholder="VÕ THÁI NGUYÊN" required>
-      </div>
-      <div class="form-group">
-        <label>SĐT <span class="required">*</span></label>
-        <input type="tel" id="custPhone" class="form-control" placeholder="0945040887" inputmode="tel" required>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label>Model Máy <span class="required">*</span></label>
-        <input type="text" id="custModel" class="form-control" placeholder="iPhone 12 Pro Max" required oninput="autoBuildDeviceName()">
-      </div>
-      <div class="form-group">
-        <label>Dung Lượng</label>
-        <select id="custCapacity" class="form-control" onchange="autoBuildDeviceName()">
-          <option value="128GB">128GB</option>
-          <option value="256GB">256GB</option>
-          <option value="512GB">512GB</option>
-          <option value="1TB">1TB</option>
-          <option value="64GB">64GB</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-row-3">
-      <div class="form-group">
-        <label>Màu Sắc</label>
-        <input type="text" id="custColor" class="form-control" placeholder="Gold" oninput="autoBuildDeviceName()">
-      </div>
-      <div class="form-group">
-        <label>Số Lượng</label>
-        <input type="text" id="custQty" class="form-control" value="01">
-      </div>
-      <div class="form-group">
-        <label>Tình Trạng</label>
-        <select id="custCondition" class="form-control">
-          <option value="99%">99%</option>
-          <option value="New 100%">New 100%</option>
-          <option value="98%">98%</option>
-          <option value="95%">95%</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Mã IMEI (15 số)</label>
-      <input type="text" id="custImei" class="form-control" placeholder="3544408933768..." oninput="autoBuildDeviceName()">
-    </div>
-
-    <div class="form-group">
-      <label>Model Thiết Bị (Ghép Tên)</label>
-      <input type="text" id="custDeviceModel" class="form-control" placeholder="iPhone 12 Pro Max - Gold - 128GB">
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label>Giá Gốc (VNĐ) <span class="required">*</span></label>
-        <input type="number" id="custPrice" class="form-control" min="0" step="any" inputmode="numeric" placeholder="11190000" required>
-      </div>
-      <div class="form-group">
-        <label>Tiền Cọc (Đã Trả Trước) <span class="required">*</span></label>
-        <input type="number" id="custDeposit" class="form-control" min="0" step="any" inputmode="numeric" placeholder="2797500" required>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label>Số Kỳ (Tháng Góp) <span class="required">*</span></label>
-        <input type="number" id="custTerms" class="form-control" min="1" step="1" inputmode="numeric" placeholder="9" value="9" required>
-      </div>
-      <div class="form-group">
-        <label>Tiền Mỗi Kỳ (VNĐ) <span class="required">*</span></label>
-        <input type="number" id="custMonthlyAmount" class="form-control" min="0" step="any" inputmode="numeric" placeholder="1444000" required>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Ngày Bắt Đầu / Mua Máy</label>
-      <input type="date" id="custDate" class="form-control">
-    </div>
-
-    <div class="form-group">
-      <label>Ghi Chú</label>
-      <input type="text" id="custNotes" class="form-control" placeholder="Ghi chú thêm...">
-    </div>
-
-    <div style="display:flex; gap:8px; margin-top:14px;">
-      <button type="submit" class="btn btn-primary" id="btnSubmit">
-        💾 Lưu Thông Tin Khách Hàng
-      </button>
-      <button type="button" class="btn btn-secondary" onclick="closeFormModal()">
-        Đóng
-      </button>
-    </div>
-  </form>
-</template>
-
 <script>
-  let viewMode = 'compact'; // 'compact': Vừa màn hình không cần kéo qua; 'full': Tất cả 15 cột Notion
+  let viewMode = 'compact'; // 'compact': Vừa màn hình; 'full': Tất cả cột
   let isServerConnected = false;
   let apiBaseUrl = '';
-  let expandedCustomerId = null; // Khách hàng đang mở rộng chi tiết các kỳ
+  let expandedCustomerId = null;
+  const RENDER_CLOUD_URL = 'https://quan-ly-khach-hang-tra-gop-vscode.onrender.com';
 
-  // DỮ LIỆU GỐC THEO BẢNG CỦA BẠN
   const INITIAL_DATA = [
     {
       id: "KH1",
+      name: "NGUYỄN ANH KHOA",
+      phone: "0937206401",
+      deviceModel: "iPhone 17 - Black - 3343",
+      model: "iPhone 17",
+      capacity: "256GB",
+      color: "Black",
+      imei: "352000937283343",
+      qty: "01",
+      condition: "99%",
+      price: 21390000,
+      deposit: 10695000,
+      terms: 9,
+      monthlyAmount: 1841000,
+      startDate: "2026-10-10",
+      notes: "Trả góp thẻ tín dụng",
+      schedule: [
+        { term: 1, dueDate: "23/10/2026", amount: 1841000, actualAmount: 1841000, paidDate: "10/10/2026", debt: 0, status: "paid" },
+        { term: 2, dueDate: "23/11/2026", amount: 1841000, actualAmount: null, paidDate: null, debt: 1841000, status: "upcoming" },
+        { term: 3, dueDate: "23/12/2026", amount: 1841000, actualAmount: null, paidDate: null, debt: 1841000, status: "upcoming" },
+        { term: 4, dueDate: "23/01/2027", amount: 1841000, actualAmount: null, paidDate: null, debt: 1841000, status: "upcoming" },
+        { term: 5, dueDate: "23/02/2027", amount: 1841000, actualAmount: null, paidDate: null, debt: 1841000, status: "upcoming" },
+        { term: 6, dueDate: "23/03/2027", amount: 1841000, actualAmount: null, paidDate: null, debt: 1841000, status: "upcoming" },
+        { term: 7, dueDate: "23/04/2027", amount: 1841000, actualAmount: null, paidDate: null, debt: 1841000, status: "upcoming" },
+        { term: 8, dueDate: "23/05/2027", amount: 1841000, actualAmount: null, paidDate: null, debt: 1841000, status: "upcoming" },
+        { term: 9, dueDate: "23/06/2027", amount: 1841000, actualAmount: null, paidDate: null, debt: 1841000, status: "upcoming" }
+      ]
+    },
+    {
+      id: "KH2",
       name: "VÕ THÁI NGUYÊN",
       phone: "0945040887",
       deviceModel: "iPhone 12 Pro Max - Gold - 128GB",
@@ -1052,62 +1251,7 @@
       ]
     },
     {
-      id: "KH2",
-      name: "ĐƯỜNG VĂN HƯỞNG",
-      phone: "0974579070",
-      deviceModel: "iPhone 14 - Starlight - 9521",
-      model: "iPhone 14",
-      capacity: "128GB",
-      color: "Starlight",
-      imei: "351168082939521",
-      qty: "01",
-      condition: "99%",
-      price: 10490000,
-      deposit: 3147000,
-      terms: 9,
-      monthlyAmount: 1260000,
-      startDate: "2026-10-01",
-      notes: "Chuyển khoản Vietcombank",
-      schedule: [
-        { term: 1, dueDate: "01/11/2026", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
-        { term: 2, dueDate: "01/12/2026", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
-        { term: 3, dueDate: "01/01/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
-        { term: 4, dueDate: "01/02/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
-        { term: 5, dueDate: "01/03/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
-        { term: 6, dueDate: "01/04/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
-        { term: 7, dueDate: "01/05/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
-        { term: 8, dueDate: "01/06/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
-        { term: 9, dueDate: "01/07/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" }
-      ]
-    },
-    {
       id: "KH3",
-      name: "ĐINH THỊ HỒNG NGÂN",
-      phone: "0869882912",
-      deviceModel: "iPhone 12 - Green - 7325",
-      model: "iPhone 12",
-      capacity: "128GB",
-      color: "Green",
-      imei: "353062111517325",
-      qty: "01",
-      condition: "99%",
-      price: 8090000,
-      deposit: 1618000,
-      terms: 6,
-      monthlyAmount: 1660000,
-      startDate: "2026-09-01",
-      notes: "Đã thanh toán kỳ 1",
-      schedule: [
-        { term: 1, dueDate: "01/10/2026", amount: 1660000, actualAmount: 1660000, paidDate: "01/10/2026", debt: 0, status: "paid" },
-        { term: 2, dueDate: "01/11/2026", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" },
-        { term: 3, dueDate: "01/12/2026", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" },
-        { term: 4, dueDate: "01/01/2027", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" },
-        { term: 5, dueDate: "01/02/2027", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" },
-        { term: 6, dueDate: "01/03/2027", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" }
-      ]
-    },
-    {
-      id: "KH4",
       name: "TẠ QUỐC QUYỀN",
       phone: "0981100593",
       deviceModel: "iPhone 16 Pro Max - Natural - 7355",
@@ -1185,66 +1329,9 @@
     return list;
   }
 
-  // Tự động kiểm tra và đồng bộ thời gian thực mỗi 4 giây (Điện thoại & Máy tính tự thấy nhau)
-  let lastSyncTimestamp = Date.now();
-  let syncInterval = null;
-
-  async function startRealtimeSync() {
-    if (syncInterval) clearInterval(syncInterval);
-    syncInterval = setInterval(async () => {
-      // Chỉ poll nếu người dùng không đang sửa form để tránh gián đoạn
-      const isEditing = document.getElementById("editCustomerId") && document.getElementById("editCustomerId").value;
-      if (!isEditing) {
-        await silentSyncWithServer();
-      }
-    }, 4000); // 4 giây tự động cập nhật ngầm một lần
-  }
-
-  // Đồng bộ ngầm không giật màn hình
-  async function silentSyncWithServer() {
-    if (!apiBaseUrl && !isServerConnected) return;
-    try {
-      const res = await fetch(`${apiBaseUrl}/api/customers`, { signal: AbortSignal.timeout(2500) });
-      if (res.ok) {
-        const serverData = await res.json();
-        // So sánh nếu dữ liệu có thay đổi thì mới render lại
-        const currentStr = JSON.stringify(customers);
-        const newStr = JSON.stringify(serverData);
-        if (currentStr !== newStr) {
-          console.log("[Realtime Sync] Dữ liệu thay đổi từ thiết bị khác, tự động cập nhật!");
-          customers = serverData;
-          localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
-          updateKPIs();
-          renderTable();
-          const badge = document.getElementById("serverStatusBadge");
-          if (badge) {
-            const time = new Date().toLocaleTimeString('vi-VN');
-            badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block;"></span> Đồng bộ thời gian thực (${time})`;
-          }
-        }
-      }
-    } catch(e) {}
-  }
-
-  // Tải database.json trực tiếp từ Render về máy tính
-  function downloadServerDatabase() {
-    const blob = new Blob([JSON.stringify(customers, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "database.json";
-    a.click();
-    alert("Đã tải file database.json mới nhất từ Render về máy! Bạn chỉ cần copy đè file này vào thư mục VS Code.");
-  }
-
-  const RENDER_CLOUD_URL = 'https://quan-ly-khach-hang-tra-gop-vscode.onrender.com';
-
-  // Kết nối Server thông minh:
-  // Nếu mở trên Render -> dùng chính Render
-  // Nếu mở trên Localhost (127.0.0.1:5500) -> kết nối thẳng vào Render Cloud để dùng chung 1 database duy nhất!
+  // Kết nối Server thông minh (Render Cloud & Localhost)
   async function syncWithServer(manualNotice = false) {
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
-    
-    // Nếu chạy local, ưu tiên kết nối thẳng vào Render Cloud để đồng bộ 100% với online
     const endpoints = isLocal 
       ? [RENDER_CLOUD_URL, '', 'http://localhost:3000', 'http://127.0.0.1:3000']
       : ['', RENDER_CLOUD_URL, 'http://localhost:3000'];
@@ -1261,10 +1348,7 @@
           
           const badge = document.getElementById("serverStatusBadge");
           if (badge) {
-            const serverName = base.includes('onrender.com') ? 'Cloud Render Online' : (base ? 'Local Node.js' : 'Server Hiện Tại');
-            badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block;"></span> Dùng chung Database: ${serverName}`;
-            badge.style.background = "#dcfce7";
-            badge.style.color = "#16a34a";
+            badge.innerHTML = `<span class="dot"></span> Đồng bộ Cloud Render (Online)`;
           }
           updateKPIs();
           renderTable();
@@ -1278,7 +1362,7 @@
     isServerConnected = false;
     const badge = document.getElementById("serverStatusBadge");
     if (badge) {
-      badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:#ca8a04; display:inline-block;"></span> Chế độ lưu máy (Offline)`;
+      badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:#ca8a04; display:inline-block;"></span> Chế độ Offline`;
       badge.style.background = "#fef9c3";
       badge.style.color = "#a16207";
     }
@@ -1288,64 +1372,62 @@
     return false;
   }
 
-  // Tính toán KPI đồng bộ chính xác theo từng kỳ thu tiền thực tế
+  let syncInterval = null;
+  function startRealtimeSync() {
+    if (syncInterval) clearInterval(syncInterval);
+    syncInterval = setInterval(async () => {
+      const isEditing = document.getElementById("formModal").classList.contains("active");
+      if (!isEditing && apiBaseUrl) {
+        try {
+          const res = await fetch(`${apiBaseUrl}/api/customers`, { signal: AbortSignal.timeout(2500) });
+          if (res.ok) {
+            const serverData = await res.json();
+            if (JSON.stringify(customers) !== JSON.stringify(serverData)) {
+              customers = serverData;
+              localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
+              updateKPIs();
+              renderTable();
+            }
+          }
+        } catch(e) {}
+      }
+    }, 3500);
+  }
+
   function updateKPIs() {
     let totalRevenue = 0;
     let totalDeposit = 0;
-    let totalCollectedFromTerms = 0;
-    let totalRemainingDebt = 0;
-    let totalMonthly = 0;
+    let totalCollectedTerms = 0;
+    let totalRemaining = 0;
 
     customers.forEach(c => {
       const price = c.price || 0;
       const deposit = c.deposit || 0;
-      const terms = c.terms || 9;
       totalRevenue += price;
       totalDeposit += deposit;
-      totalMonthly += (c.monthlyAmount || 0);
 
-      // Tính tổng tiền các kỳ đã thực thu
-      let paidFromTerms = 0;
-      if (c.schedule && c.schedule.length > 0) {
-        c.schedule.forEach(s => {
-          if (s.status === 'paid' && s.actualAmount) {
-            paidFromTerms += s.actualAmount;
-          }
-        });
-      }
-      totalCollectedFromTerms += paidFromTerms;
+      let paidTerms = 0;
+      (c.schedule || []).forEach(s => {
+        if (s.status === 'paid' && s.actualAmount) {
+          paidTerms += s.actualAmount;
+        }
+      });
+      totalCollectedTerms += paidTerms;
 
-      // Dư nợ còn lại của khách này
       const originalDebt = Math.max(0, price - deposit);
-      const currentDebt = Math.max(0, originalDebt - paidFromTerms);
-      totalRemainingDebt += currentDebt;
+      const curDebt = Math.max(0, originalDebt - paidTerms);
+      totalRemaining += curDebt;
     });
 
-    const totalCollectedAll = totalDeposit + totalCollectedFromTerms;
+    const totalCollectedAll = totalDeposit + totalCollectedTerms;
 
     document.getElementById("kpiTotalCustomers").innerText = customers.length;
     document.getElementById("kpiTotalRevenue").innerText = formatMoney(totalRevenue);
-    
-    // Đã thu (Cọc + Các kỳ đã đóng)
-    const depEl = document.getElementById("kpiTotalDeposit");
-    if (depEl) {
-      depEl.innerText = formatMoney(totalCollectedAll);
-      const sub = depEl.parentElement.querySelector('.kpi-sub');
-      if (sub) sub.innerText = `Cọc: ${formatMoney(totalDeposit)} | Đã thu thêm: ${formatMoney(totalCollectedFromTerms)}`;
-    }
-
-    // Dư nợ còn lại cần thu
-    const debtEl = document.getElementById("kpiTotalMonthly");
-    if (debtEl) {
-      debtEl.innerText = formatMoney(totalRemainingDebt);
-      const title = debtEl.parentElement.querySelector('.kpi-title');
-      if (title) title.innerText = "DƯ NỢ CÒN LẠI CẦN THU";
-      const sub = debtEl.parentElement.querySelector('.kpi-sub');
-      if (sub) sub.innerText = `Khoản nợ trả góp chưa thu xong`;
-    }
+    document.getElementById("kpiTotalDeposit").innerText = formatMoney(totalCollectedAll);
+    document.getElementById("kpiDepositSub").innerText = `Cọc: ${formatMoney(totalDeposit)} | Đã thu thêm: ${formatMoney(totalCollectedTerms)}`;
+    document.getElementById("kpiTotalRemaining").innerText = formatMoney(totalRemaining);
   }
 
-  // Chuyển chế độ xem Vừa màn hình (Compact) vs Đầy đủ (Full)
   function setViewMode(mode) {
     viewMode = mode;
     document.getElementById("btnViewCompact").classList.toggle("active", mode === 'compact');
@@ -1353,20 +1435,7 @@
     renderTable();
   }
 
-  function toggleSidebarForm() {
-    const layout = document.getElementById("mainLayout");
-    const isFull = layout.classList.toggle("full-width");
-    const btn = document.getElementById("btnToggleSidebar");
-    if (btn) {
-      btn.innerText = isFull ? "📝 Hiện Form Cột Trái" : "◀ Ẩn Form (Mở Rộng Bảng)";
-    }
-    if (!isFull) {
-      initFormInContainer("formContainerSidebar");
-    }
-  }
-
   function openNewCustomerModal() {
-    initFormInContainer("formContainerModal");
     resetForm();
     document.getElementById("modalFormTitle").innerText = "➕ Nhập Khách Hàng Mới";
     document.getElementById("formModal").classList.add("active");
@@ -1376,25 +1445,11 @@
     document.getElementById("formModal").classList.remove("active");
   }
 
-  function initFormInContainer(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    if (!container.querySelector('form')) {
-      const template = document.getElementById("formTemplate");
-      container.innerHTML = "";
-      container.appendChild(template.content.cloneNode(true));
-      const dateInp = container.querySelector('#custDate');
-      if (dateInp) dateInp.value = new Date().toISOString().split('T')[0];
-    }
-  }
-
   function autoBuildDeviceName() {
-    const form = document.querySelector('.modal-overlay.active form') || document.querySelector('#sidebarForm form');
-    if (!form) return;
-    const model = form.querySelector("#custModel").value.trim();
-    const color = form.querySelector("#custColor").value.trim();
-    const cap = form.querySelector("#custCapacity").value;
-    const imei = form.querySelector("#custImei").value.trim();
+    const model = document.getElementById("custModel").value.trim();
+    const color = document.getElementById("custColor").value.trim();
+    const cap = document.getElementById("custCapacity").value;
+    const imei = document.getElementById("custImei").value.trim();
 
     let parts = [];
     if (model) parts.push(model);
@@ -1406,7 +1461,7 @@
     }
 
     if (parts.length > 0) {
-      form.querySelector("#custDeviceModel").value = parts.join(" - ");
+      document.getElementById("custDeviceModel").value = parts.join(" - ");
     }
   }
 
@@ -1418,7 +1473,7 @@
     renderTable();
   }
 
-  // RENDER BẢNG CHÍNH
+  // RENDER GIAO DIỆN
   function renderTable() {
     const thead = document.getElementById("tableHead");
     const tbody = document.getElementById("tableBody");
@@ -1439,41 +1494,39 @@
 
     document.getElementById("displayCount").innerText = filtered.length;
 
-    // RENDER HEADER DỰA TRÊN VIEW MODE
+    // Header bảng Desktop
     if (viewMode === 'compact') {
-      // 7 CỘT THÔNG MINH - VỪA KHÍT MỌI MÀN HÌNH KHÔNG CẦN CUỘN
       thead.innerHTML = `
         <tr>
           <th style="width:36px; text-align:center;">#</th>
-          <th><span class="col-icon">👤</span> Khách Hàng</th>
-          <th><span class="col-icon">📱</span> Thiết Bị & IMEI</th>
-          <th style="text-align:right;"><span class="col-icon">💰</span> Giá Gốc</th>
-          <th style="text-align:right;" class="col-highlight"><span class="col-icon">💵</span> Tiền Cọc (Đã Thu)</th>
-          <th style="text-align:center;" class="col-highlight"><span class="col-icon">📅</span> Tiến Độ Kỳ</th>
-          <th style="text-align:right;"><span class="col-icon">📉</span> Dư Nợ Còn Lại</th>
-          <th style="text-align:right;"><span class="col-icon">💳</span> Mỗi Kỳ Góp</th>
+          <th>Khách Hàng</th>
+          <th>Thiết Bị & IMEI</th>
+          <th style="text-align:right;">Giá Gốc</th>
+          <th style="text-align:right;" class="col-highlight">Tiền Cọc (Đã Thu)</th>
+          <th style="text-align:center;" class="col-highlight">Tiến Độ Kỳ</th>
+          <th style="text-align:right;">Dư Nợ Còn Lại</th>
+          <th style="text-align:right;">Mỗi Kỳ Góp</th>
           <th style="text-align:center; width:95px;">Thao Tác</th>
         </tr>
       `;
     } else {
-      // 15 CỘT ĐẦY ĐỦ NHƯ BẢNG NOTION
       thead.innerHTML = `
         <tr>
           <th style="width:36px; text-align:center;">#</th>
-          <th><span class="col-icon">Aa</span> Họ Tên</th>
-          <th><span class="col-icon">Aa</span> SĐT</th>
-          <th><span class="col-icon">🔗</span> Model Thiết Bị</th>
-          <th><span class="col-icon">📱</span> Model</th>
-          <th><span class="col-icon">🏷️</span> Dung Lượng</th>
-          <th><span class="col-icon">🎨</span> Màu Sắc</th>
-          <th><span class="col-icon">🔢</span> IMEI</th>
-          <th><span class="col-icon">📦</span> Số Lượng</th>
-          <th><span class="col-icon">✨</span> Tình Trạng</th>
-          <th style="text-align:right;"><span class="col-icon">💰</span> Giá Gốc</th>
-          <th style="text-align:right;" class="col-highlight"><span class="col-icon">💵</span> Tiền Cọc (Đã Thu)</th>
-          <th style="text-align:center;" class="col-highlight"><span class="col-icon">📅</span> Tiến Độ Kỳ</th>
-          <th style="text-align:right;"><span class="col-icon">📉</span> Dư Nợ Còn Lại</th>
-          <th style="text-align:right;"><span class="col-icon">💳</span> Tiền Mỗi Kỳ</th>
+          <th>Họ Tên</th>
+          <th>SĐT</th>
+          <th>Model Thiết Bị</th>
+          <th>Model</th>
+          <th>Dung Lượng</th>
+          <th>Màu Sắc</th>
+          <th>IMEI</th>
+          <th>Số Lượng</th>
+          <th>Tình Trạng</th>
+          <th style="text-align:right;">Giá Gốc</th>
+          <th style="text-align:right;" class="col-highlight">Tiền Cọc (Đã Thu)</th>
+          <th style="text-align:center;" class="col-highlight">Tiến Độ Kỳ</th>
+          <th style="text-align:right;">Dư Nợ Còn Lại</th>
+          <th style="text-align:right;">Mỗi Kỳ Góp</th>
           <th style="text-align:center; width:95px;">Thao Tác</th>
         </tr>
       `;
@@ -1483,15 +1536,14 @@
     mobileContainer.innerHTML = "";
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="15" style="text-align:center; padding:30px; color:#94a3b8;">Không có dữ liệu phù hợp</td></tr>`;
-      mobileContainer.innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8;">Không có dữ liệu phù hợp</div>`;
+      tbody.innerHTML = `<tr><td colspan="16" style="text-align:center; padding:35px; color:#94a3b8;">Không có dữ liệu phù hợp</td></tr>`;
+      mobileContainer.innerHTML = `<div style="text-align:center; padding:35px; color:#94a3b8;">Không có dữ liệu phù hợp</div>`;
       return;
     }
 
     filtered.forEach((c, index) => {
       const isExpanded = (expandedCustomerId === c.id);
 
-      // TÍNH TOÁN ĐỒNG BỘ TOÀN DIỆN KHI CÓ KỲ THANH TOÁN
       let paidCount = 0;
       let totalPaidFromTerms = 0;
       (c.schedule || []).forEach(s => {
@@ -1504,14 +1556,14 @@
       const originalDebt = Math.max(0, (c.price || 0) - (c.deposit || 0));
       const currentRemainingDebt = Math.max(0, originalDebt - totalPaidFromTerms);
       const totalCollected = (c.deposit || 0) + totalPaidFromTerms;
+      const progressPercent = (c.terms > 0) ? Math.min(100, Math.round((paidCount / c.terms) * 100)) : 0;
 
-      // 1. RENDER DESKTOP ROW
+      // 1. DESKTOP ROW
       const trMain = document.createElement("tr");
       trMain.className = `customer-row ${isExpanded ? 'is-expanded' : ''}`;
       trMain.onclick = (e) => toggleCustomerExpand(c.id, e);
 
       if (viewMode === 'compact') {
-        // HÀNG RÚT GỌN THÔNG MINH - ĐỒNG BỘ 100% VỚI KỲ THANH TOÁN
         trMain.innerHTML = `
           <td style="text-align:center; color:#94a3b8;">
             <span class="expand-chevron">▶</span>${index + 1}
@@ -1547,14 +1599,14 @@
             </div>
           </td>
           <td style="text-align:right;">
-            <div class="money" style="color:${currentRemainingDebt === 0 ? '#16a34a' : '#dc2626'};">${formatMoney(currentRemainingDebt)}</div>
+            <div class="money" style="color:${currentRemainingDebt === 0 ? '#10b981' : '#ef4444'};">${formatMoney(currentRemainingDebt)}</div>
             <div style="font-size:10.5px; color:#64748b;">${currentRemainingDebt === 0 ? '● Hết nợ' : 'Còn ' + (c.terms - paidCount) + ' kỳ'}</div>
           </td>
           <td style="text-align:right; color:#2563eb;" class="money">${formatMoney(c.monthlyAmount)}</td>
           <td style="text-align:center;" onclick="event.stopPropagation();">
             <div style="display:flex; gap:3px; justify-content:center;">
-              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');" title="Xem lịch đóng tiền">
-                📅 ${isExpanded ? '▲ Đóng' : '▼ Chi tiết'}
+              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');" title="Xem lịch góp">
+                📅 ${isExpanded ? '▲' : '▼'}
               </button>
               <button class="btn btn-edit btn-sm" onclick="startEdit('${c.id}')" title="Sửa">✏️</button>
               <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')" title="Xóa">🗑️</button>
@@ -1562,45 +1614,37 @@
           </td>
         `;
       } else {
-        // HÀNG ĐẦY ĐỦ 16 CỘT CHUẨN NOTION - ĐỒNG BỘ 100%
         trMain.innerHTML = `
-          <td style="text-align:center; color:#94a3b8;">
-            <span class="expand-chevron">▶</span>${index + 1}
-          </td>
+          <td style="text-align:center; color:#94a3b8;"><span class="expand-chevron">▶</span>${index + 1}</td>
           <td><b>${c.name}</b></td>
           <td>${c.phone}</td>
-          <td><span class="tag-model-box" title="${c.deviceModel}">${c.deviceModel || '-'}</span></td>
+          <td>${c.deviceModel || '-'}</td>
           <td><b>${c.model}</b></td>
           <td><span class="tag tag-storage">${c.capacity || '128GB'}</span></td>
           <td>${c.color || '-'}</td>
           <td style="font-family:monospace; font-size:11.5px;">${c.imei || '-'}</td>
-          <td><span class="tag tag-qty">${c.qty || '01'}</span></td>
+          <td>${c.qty || '01'}</td>
           <td><span class="tag tag-condition">${c.condition || '99%'}</span></td>
           <td style="text-align:right;" class="money">${formatMoney(c.price)}</td>
           <td style="text-align:right;" class="col-highlight">
             <div class="money text-success">${formatMoney(totalCollected)}</div>
             <div style="font-size:10.5px; color:#64748b;">Cọc: ${formatMoney(c.deposit)}</div>
           </td>
-          <td style="text-align:center;" class="col-highlight">
-            <b>${c.terms} kỳ</b>
-            <div style="font-size:10.5px; color:#2563eb; font-weight:600;">(Đã đóng ${paidCount}/${c.terms})</div>
-          </td>
-          <td style="text-align:right;">
-            <div class="money" style="color:${currentRemainingDebt === 0 ? '#16a34a' : '#dc2626'};">${formatMoney(currentRemainingDebt)}</div>
-          </td>
+          <td style="text-align:center;" class="col-highlight"><b>${c.terms} kỳ</b> (${paidCount}/${c.terms})</td>
+          <td style="text-align:right;"><div class="money" style="color:${currentRemainingDebt === 0 ? '#10b981' : '#ef4444'};">${formatMoney(currentRemainingDebt)}</div></td>
           <td style="text-align:right; color:#2563eb;" class="money">${formatMoney(c.monthlyAmount)}</td>
           <td style="text-align:center;" onclick="event.stopPropagation();">
             <div style="display:flex; gap:3px; justify-content:center;">
-              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');" title="Xem lịch đóng tiền">📅</button>
-              <button class="btn btn-edit btn-sm" onclick="startEdit('${c.id}')" title="Sửa">✏️</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')" title="Xóa">🗑️</button>
+              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');">📅</button>
+              <button class="btn btn-edit btn-sm" onclick="startEdit('${c.id}')">✏️</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')">🗑️</button>
             </div>
           </td>
         `;
       }
       tbody.appendChild(trMain);
 
-      // DÒNG MỞ RỘNG KỲ THANH TOÁN (DESKTOP)
+      // DESKTOP EXPANDED ROW
       if (isExpanded) {
         const trDetail = document.createElement("tr");
         trDetail.className = "detail-row";
@@ -1618,12 +1662,12 @@
 
           scheduleHtml += `
             <tr>
-              <td style="text-align:center; font-weight:600;">${s.term}</td>
-              <td style="font-weight:500;">${s.dueDate}</td>
-              <td style="font-weight:600;">${formatMoney(s.amount)}</td>
+              <td style="text-align:center; font-weight:700;">${s.term}</td>
+              <td style="font-weight:600;">${s.dueDate}</td>
+              <td style="font-weight:700;">${formatMoney(s.amount)}</td>
               <td>${s.actualAmount ? formatMoney(s.actualAmount) : "—"}</td>
               <td>${s.paidDate || "—"}</td>
-              <td style="font-weight:600; color:${s.debt > 0 ? '#1e293b' : '#16a34a'};">${formatMoney(s.debt)}</td>
+              <td style="font-weight:700; color:${s.debt > 0 ? '#0f172a' : '#10b981'};">${formatMoney(s.debt)}</td>
               <td>${badge}</td>
               <td style="text-align:center;">${btn}</td>
             </tr>
@@ -1646,14 +1690,14 @@
                 <table class="schedule-table">
                   <thead>
                     <tr>
-                      <th style="width:40px; text-align:center;">KỲ</th>
+                      <th style="width:45px; text-align:center;">KỲ</th>
                       <th>NGÀY ĐẾN HẠN</th>
                       <th>TIỀN MỖI KỲ</th>
                       <th>THỰC THU</th>
                       <th>NGÀY THỰC THU</th>
                       <th>DƯ NỢ</th>
                       <th>TRẠNG THÁI</th>
-                      <th style="width:80px; text-align:center;">THAO TÁC</th>
+                      <th style="width:85px; text-align:center;">THAO TÁC</th>
                     </tr>
                   </thead>
                   <tbody>${scheduleHtml}</tbody>
@@ -1665,61 +1709,88 @@
         tbody.appendChild(trDetail);
       }
 
-      // 2. RENDER MOBILE CARD (CHO ĐIỆN THOẠI)
+      // 2. MOBILE CARD VIEW (THIẾT KẾ CARD HIỆN ĐẠI CHO ĐIỆN THOẠI)
       const mCard = document.createElement("div");
-      mCard.className = "customer-card-mobile";
+      mCard.className = "m-card";
       mCard.innerHTML = `
-        <div class="m-card-head">
+        <div class="m-card-top">
           <div>
             <div class="m-cust-name">${c.name}</div>
-            <a href="tel:${c.phone}" class="m-cust-phone">📞 ${c.phone}</a>
+            <a href="tel:${c.phone}" class="m-phone-btn">📞 ${c.phone}</a>
           </div>
-          <div style="display:flex; gap:4px;">
-            <button class="btn btn-edit btn-sm" onclick="startEdit('${c.id}')">✏️ Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')">🗑️</button>
+          <div>
+            ${paidCount === c.terms ? 
+              '<span class="term-status-badge status-paid" style="font-size:11px;">Đã tất toán</span>' : 
+              (paidCount > 0 ? '<span class="term-status-badge status-upcoming" style="font-size:11px;">Đã đóng ' + paidCount + '/' + c.terms + ' kỳ</span>' : '<span style="font-size:11px; color:#94a3b8; font-weight:600;">Chưa đóng kỳ nào</span>')}
           </div>
         </div>
 
         <div class="m-device-box">
-          <b>${c.model}</b> &bull; ${c.capacity || '128GB'} &bull; ${c.color || 'Gold'} &bull; ${c.condition || '99%'}
-          <div style="font-size:11px; color:#64748b; margin-top:2px;">IMEI: ${c.imei || 'Chưa có'}</div>
-        </div>
-
-        <div class="m-finance-grid">
-          <div class="m-finance-item">
-            <span class="m-finance-label">Giá Gốc</span>
-            <span class="m-finance-val">${formatMoney(c.price)}</span>
-          </div>
-          <div class="m-finance-item">
-            <span class="m-finance-label">Đã Thu (Cọc + Kỳ)</span>
-            <span class="m-finance-val text-success">${formatMoney(totalCollected)}</span>
-          </div>
-          <div class="m-finance-item">
-            <span class="m-finance-label">Tiến Độ Góp</span>
-            <span class="m-finance-val" style="color:#2563eb;">Đã đóng ${paidCount}/${c.terms} kỳ</span>
-          </div>
-          <div class="m-finance-item">
-            <span class="m-finance-label">Dư Nợ Còn Lại</span>
-            <span class="m-finance-val" style="color:${currentRemainingDebt === 0 ? '#16a34a' : '#dc2626'};">${formatMoney(currentRemainingDebt)}</span>
+          <div class="m-device-title">📱 ${c.model}</div>
+          <div class="m-device-tags">
+            <span class="tag tag-storage">${c.capacity || '128GB'}</span>
+            <span class="tag tag-color">${c.color || 'Titan'}</span>
+            <span class="tag tag-condition">${c.condition || '99%'}</span>
+            <span class="tag tag-imei">IMEI: ${c.imei ? c.imei.slice(-6) : '-'}</span>
           </div>
         </div>
 
-        <button class="btn btn-secondary btn-sm" style="width:100%; justify-content:center;" onclick="toggleCustomerExpand('${c.id}')">
-          📅 ${isExpanded ? '▲ Thu gọn lịch góp' : '▼ Xem chi tiết ' + c.terms + ' kỳ thanh toán'}
-        </button>
+        <div class="m-metrics-grid">
+          <div class="m-metric-item">
+            <span class="m-metric-label">Giá Máy</span>
+            <span class="m-metric-val">${formatMoney(c.price)}</span>
+          </div>
+          <div class="m-metric-item">
+            <span class="m-metric-label">Đã Thu (Cọc + Kỳ)</span>
+            <span class="m-metric-val text-success">${formatMoney(totalCollected)}</span>
+            <span class="m-metric-sub">Cọc: ${formatMoney(c.deposit)}</span>
+          </div>
+          <div class="m-metric-item">
+            <span class="m-metric-label">Dư Nợ Còn Lại</span>
+            <span class="m-metric-val" style="color:${currentRemainingDebt === 0 ? '#10b981' : '#ef4444'};">${formatMoney(currentRemainingDebt)}</span>
+            <span class="m-metric-sub">${currentRemainingDebt === 0 ? 'Đã hết nợ' : 'Còn ' + (c.terms - paidCount) + ' kỳ'}</span>
+          </div>
+          <div class="m-metric-item">
+            <span class="m-metric-label">Mỗi Kỳ Góp</span>
+            <span class="m-metric-val text-primary">${formatMoney(c.monthlyAmount)}</span>
+            <span class="m-metric-sub">Thời hạn: ${c.terms} kỳ</span>
+          </div>
+        </div>
+
+        <div class="m-progress-wrap">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; font-weight:600;">
+            <span>Tiến độ thanh toán</span>
+            <span>${progressPercent}% (${paidCount}/${c.terms} kỳ)</span>
+          </div>
+          <div class="m-progress-bar-bg">
+            <div class="m-progress-bar-fill ${paidCount === c.terms ? 'done' : ''}" style="width: ${progressPercent}%;"></div>
+          </div>
+        </div>
+
+        <div class="m-card-footer">
+          <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}')">
+            📅 ${isExpanded ? '▲ Thu gọn lịch' : '▼ Chi tiết ' + c.terms + ' kỳ góp'}
+          </button>
+          <button class="btn btn-edit btn-sm" style="flex:0 0 auto;" onclick="startEdit('${c.id}')">
+            ✏️ Sửa
+          </button>
+          <button class="btn btn-danger btn-sm" style="flex:0 0 auto;" onclick="deleteCustomer('${c.id}')">
+            🗑️
+          </button>
+        </div>
 
         ${isExpanded ? `
-          <div style="margin-top:10px; border-top:1px dashed #cbd5e1; padding-top:10px;">
+          <div class="m-schedule-list">
             ${(c.schedule || []).map(s => `
-              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f1f5f9; font-size:12px;">
-                <div>
-                  <b>Kỳ ${s.term}</b> &bull; ${s.dueDate}<br>
-                  <span style="color:#2563eb; font-weight:600;">${formatMoney(s.amount)}</span>
+              <div class="m-schedule-item">
+                <div class="m-schedule-left">
+                  <span class="m-schedule-term">Kỳ ${s.term} (${s.dueDate})</span>
+                  <span class="m-schedule-money">${formatMoney(s.amount)}</span>
                 </div>
                 <div style="text-align:right;">
                   ${s.status === 'paid' ? 
-                    `<span class="term-status-badge status-paid"><span class="dot"></span>Đã đóng</span><br><button class="btn-pay-action paid" style="margin-top:3px;" onclick="undoPayment('${c.id}', ${s.term})">Hủy</button>` :
-                    `<span class="term-status-badge status-upcoming"><span class="dot"></span>Chưa đóng</span><br><button class="btn-pay-action" style="margin-top:3px;" onclick="markPaid('${c.id}', ${s.term})">Thu tiền</button>`}
+                    `<span class="term-status-badge status-paid"><span class="dot"></span>Đã đóng</span><br><button class="btn-pay-action paid" style="margin-top:4px;" onclick="undoPayment('${c.id}', ${s.term})">Hủy</button>` :
+                    `<span class="term-status-badge status-upcoming"><span class="dot"></span>Chưa đóng</span><br><button class="btn-pay-action" style="margin-top:4px;" onclick="markPaid('${c.id}', ${s.term})">Thu tiền</button>`}
                 </div>
               </div>
             `).join('')}
@@ -1752,7 +1823,7 @@
     updateKPIs();
     renderTable();
 
-    if (isServerConnected) {
+    if (apiBaseUrl) {
       try {
         await fetch(`${apiBaseUrl}/api/customers/${customerId}/pay`, {
           method: 'POST',
@@ -1780,7 +1851,7 @@
     updateKPIs();
     renderTable();
 
-    if (isServerConnected) {
+    if (apiBaseUrl) {
       try {
         await fetch(`${apiBaseUrl}/api/customers/${customerId}/pay`, {
           method: 'POST',
@@ -1791,29 +1862,26 @@
     }
   }
 
-  // Lưu khách hàng (Đảm bảo 100% không bao giờ reload mất form)
+  // Lưu khách hàng
   async function handleSaveCustomer(e) {
     if (e && e.preventDefault) e.preventDefault();
 
-    const form = document.querySelector('.modal-overlay.active form') || document.querySelector('#sidebarForm form');
-    if (!form) return;
-
-    const editId = form.querySelector("#editCustomerId").value;
-    const name = form.querySelector("#custName").value.trim();
-    const phone = form.querySelector("#custPhone").value.trim();
-    const model = form.querySelector("#custModel").value.trim();
-    const capacity = form.querySelector("#custCapacity").value;
-    const color = form.querySelector("#custColor").value.trim();
-    const qty = form.querySelector("#custQty").value.trim() || "01";
-    const condition = form.querySelector("#custCondition").value;
-    const imei = form.querySelector("#custImei").value.trim();
-    const deviceModel = form.querySelector("#custDeviceModel").value.trim() || `${model} - ${color} - ${capacity}`;
-    const price = parseFloat(form.querySelector("#custPrice").value) || 0;
-    const deposit = parseFloat(form.querySelector("#custDeposit").value) || 0;
-    const terms = parseInt(form.querySelector("#custTerms").value) || 9;
-    const monthlyAmount = parseFloat(form.querySelector("#custMonthlyAmount").value) || 0;
-    const startDate = form.querySelector("#custDate").value || new Date().toISOString().split('T')[0];
-    const notes = form.querySelector("#custNotes").value.trim();
+    const editId = document.getElementById("editCustomerId").value;
+    const name = document.getElementById("custName").value.trim();
+    const phone = document.getElementById("custPhone").value.trim();
+    const model = document.getElementById("custModel").value.trim();
+    const capacity = document.getElementById("custCapacity").value;
+    const color = document.getElementById("custColor").value.trim();
+    const qty = document.getElementById("custQty").value.trim() || "01";
+    const condition = document.getElementById("custCondition").value;
+    const imei = document.getElementById("custImei").value.trim();
+    const deviceModel = document.getElementById("custDeviceModel").value.trim() || `${model} - ${color} - ${capacity}`;
+    const price = parseFloat(document.getElementById("custPrice").value) || 0;
+    const deposit = parseFloat(document.getElementById("custDeposit").value) || 0;
+    const terms = parseInt(document.getElementById("custTerms").value) || 9;
+    const monthlyAmount = parseFloat(document.getElementById("custMonthlyAmount").value) || 0;
+    const startDate = document.getElementById("custDate").value || new Date().toISOString().split('T')[0];
+    const notes = document.getElementById("custNotes").value.trim();
 
     if (deposit > price) {
       alert("Tiền cọc (trả trước) không thể lớn hơn giá gốc máy!");
@@ -1850,13 +1918,11 @@
       expandedCustomerId = newCustId;
     }
 
-    // 1. Lưu ngay vào LocalStorage
     localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
     updateKPIs();
     renderTable();
 
-    // 2. Đồng bộ ngầm lên server nếu có
-    if (isServerConnected && targetCust) {
+    if (apiBaseUrl && targetCust) {
       try {
         if (editId) {
           await fetch(`${apiBaseUrl}/api/customers/${editId}`, {
@@ -1880,16 +1946,13 @@
   }
 
   function resetForm() {
-    const forms = document.querySelectorAll('form');
-    forms.forEach(f => {
-      f.reset();
-      f.querySelector("#editCustomerId").value = "";
-      f.querySelector("#custDate").value = new Date().toISOString().split('T')[0];
-      f.querySelector("#custTerms").value = "9";
-      f.querySelector("#custCapacity").value = "128GB";
-      f.querySelector("#custCondition").value = "99%";
-      f.querySelector("#custQty").value = "01";
-    });
+    document.getElementById("customerForm").reset();
+    document.getElementById("editCustomerId").value = "";
+    document.getElementById("custDate").value = new Date().toISOString().split('T')[0];
+    document.getElementById("custTerms").value = "9";
+    document.getElementById("custCapacity").value = "256GB";
+    document.getElementById("custCondition").value = "99%";
+    document.getElementById("custQty").value = "01";
   }
 
   function startEdit(id) {
@@ -1897,25 +1960,22 @@
     if (!c) return;
 
     openNewCustomerModal();
-    const form = document.querySelector('.modal-overlay.active form');
-    if (!form) return;
-
-    form.querySelector("#editCustomerId").value = c.id;
-    form.querySelector("#custName").value = c.name;
-    form.querySelector("#custPhone").value = c.phone;
-    form.querySelector("#custModel").value = c.model;
-    form.querySelector("#custCapacity").value = c.capacity || "128GB";
-    form.querySelector("#custColor").value = c.color || "";
-    form.querySelector("#custQty").value = c.qty || "01";
-    form.querySelector("#custCondition").value = c.condition || "99%";
-    form.querySelector("#custImei").value = c.imei || "";
-    form.querySelector("#custDeviceModel").value = c.deviceModel || "";
-    form.querySelector("#custPrice").value = c.price;
-    form.querySelector("#custDeposit").value = c.deposit;
-    form.querySelector("#custTerms").value = c.terms;
-    form.querySelector("#custMonthlyAmount").value = c.monthlyAmount;
-    form.querySelector("#custDate").value = c.startDate || "";
-    form.querySelector("#custNotes").value = c.notes || "";
+    document.getElementById("editCustomerId").value = c.id;
+    document.getElementById("custName").value = c.name;
+    document.getElementById("custPhone").value = c.phone;
+    document.getElementById("custModel").value = c.model;
+    document.getElementById("custCapacity").value = c.capacity || "128GB";
+    document.getElementById("custColor").value = c.color || "";
+    document.getElementById("custQty").value = c.qty || "01";
+    document.getElementById("custCondition").value = c.condition || "99%";
+    document.getElementById("custImei").value = c.imei || "";
+    document.getElementById("custDeviceModel").value = c.deviceModel || "";
+    document.getElementById("custPrice").value = c.price;
+    document.getElementById("custDeposit").value = c.deposit;
+    document.getElementById("custTerms").value = c.terms;
+    document.getElementById("custMonthlyAmount").value = c.monthlyAmount;
+    document.getElementById("custDate").value = c.startDate || "";
+    document.getElementById("custNotes").value = c.notes || "";
 
     document.getElementById("modalFormTitle").innerText = "✏️ Cập Nhật Khách Hàng: " + c.name;
   }
@@ -1930,7 +1990,7 @@
       updateKPIs();
       renderTable();
 
-      if (isServerConnected) {
+      if (apiBaseUrl) {
         try {
           await fetch(`${apiBaseUrl}/api/customers/${id}`, { method: 'DELETE' });
         } catch (err) {}
@@ -1938,7 +1998,14 @@
     }
   }
 
-  // Xuất file CSV
+  function downloadServerDatabase() {
+    const blob = new Blob([JSON.stringify(customers, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "database.json";
+    a.click();
+  }
+
   function exportToCSV() {
     let csv = "\uFEFF";
     csv += "Họ Tên,SĐT,Model Thiết Bị,Model,Dung Lượng,Màu Sắc,IMEI,Số Lượng,Tình Trạng,Giá Gốc,Tiền Cọc,Số Kỳ,Tiền Mỗi Kỳ,Ngày Bắt Đầu,Ghi Chú\n";
@@ -1957,37 +2024,8 @@
     a.click();
   }
 
-  function exportJSON() {
-    const blob = new Blob([JSON.stringify(customers, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `backup_khach_hang_${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-  }
-
-  function importJSON(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      try {
-        const data = JSON.parse(evt.target.result);
-        if (Array.isArray(data)) {
-          customers = data;
-          localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
-          updateKPIs();
-          renderTable();
-          alert("Phục hồi dữ liệu thành công!");
-        }
-      } catch (err) { alert("File không hợp lệ!"); }
-    };
-    reader.readAsText(file);
-  }
-
-  // Khởi tạo form trong sidebar
-  initFormInContainer("formContainerSidebar");
-
-  // Kết nối và render
+  // Khởi tạo
+  document.getElementById("custDate").value = new Date().toISOString().split('T')[0];
   syncWithServer();
 </script>
 
