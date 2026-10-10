@@ -1434,8 +1434,9 @@
           <th><span class="col-icon">👤</span> Khách Hàng</th>
           <th><span class="col-icon">📱</span> Thiết Bị & IMEI</th>
           <th style="text-align:right;"><span class="col-icon">💰</span> Giá Gốc</th>
-          <th style="text-align:right;" class="col-highlight"><span class="col-icon">💵</span> Tiền Cọc</th>
-          <th style="text-align:center;" class="col-highlight"><span class="col-icon">📅</span> Số Kỳ</th>
+          <th style="text-align:right;" class="col-highlight"><span class="col-icon">💵</span> Tiền Cọc (Đã Thu)</th>
+          <th style="text-align:center;" class="col-highlight"><span class="col-icon">📅</span> Tiến Độ Kỳ</th>
+          <th style="text-align:right;"><span class="col-icon">📉</span> Dư Nợ Còn Lại</th>
           <th style="text-align:right;"><span class="col-icon">💳</span> Mỗi Kỳ Góp</th>
           <th style="text-align:center; width:95px;">Thao Tác</th>
         </tr>
@@ -1455,8 +1456,9 @@
           <th><span class="col-icon">📦</span> Số Lượng</th>
           <th><span class="col-icon">✨</span> Tình Trạng</th>
           <th style="text-align:right;"><span class="col-icon">💰</span> Giá Gốc</th>
-          <th style="text-align:right;" class="col-highlight"><span class="col-icon">💵</span> Tiền Cọc</th>
-          <th style="text-align:center;" class="col-highlight"><span class="col-icon">📅</span> Số Kỳ</th>
+          <th style="text-align:right;" class="col-highlight"><span class="col-icon">💵</span> Tiền Cọc (Đã Thu)</th>
+          <th style="text-align:center;" class="col-highlight"><span class="col-icon">📅</span> Tiến Độ Kỳ</th>
+          <th style="text-align:right;"><span class="col-icon">📉</span> Dư Nợ Còn Lại</th>
           <th style="text-align:right;"><span class="col-icon">💳</span> Tiền Mỗi Kỳ</th>
           <th style="text-align:center; width:95px;">Thao Tác</th>
         </tr>
@@ -1475,13 +1477,27 @@
     filtered.forEach((c, index) => {
       const isExpanded = (expandedCustomerId === c.id);
 
+      // TÍNH TOÁN ĐỒNG BỘ TOÀN DIỆN KHI CÓ KỲ THANH TOÁN
+      let paidCount = 0;
+      let totalPaidFromTerms = 0;
+      (c.schedule || []).forEach(s => {
+        if (s.status === 'paid') {
+          paidCount++;
+          totalPaidFromTerms += (s.actualAmount || s.amount || 0);
+        }
+      });
+
+      const originalDebt = Math.max(0, (c.price || 0) - (c.deposit || 0));
+      const currentRemainingDebt = Math.max(0, originalDebt - totalPaidFromTerms);
+      const totalCollected = (c.deposit || 0) + totalPaidFromTerms;
+
       // 1. RENDER DESKTOP ROW
       const trMain = document.createElement("tr");
       trMain.className = `customer-row ${isExpanded ? 'is-expanded' : ''}`;
       trMain.onclick = (e) => toggleCustomerExpand(c.id, e);
 
       if (viewMode === 'compact') {
-        // HÀNG RÚT GỌN THÔNG MINH - VỪA MÀN HÌNH KHÔNG CẦN KÉO QUA
+        // HÀNG RÚT GỌN THÔNG MINH - ĐỒNG BỘ 100% VỚI KỲ THANH TOÁN
         trMain.innerHTML = `
           <td style="text-align:center; color:#94a3b8;">
             <span class="expand-chevron">▶</span>${index + 1}
@@ -1490,15 +1506,6 @@
             <div class="cust-cell">
               <span class="cust-name">${c.name}</span>
               <span class="cust-phone">📞 ${c.phone}</span>
-              <span style="font-size:11px; margin-top:2px;">
-                ${(() => {
-                  let paidCount = 0;
-                  (c.schedule || []).forEach(s => { if (s.status === 'paid') paidCount++; });
-                  if (paidCount === c.terms) return '<b style="color:#16a34a;">● Đã tất toán ' + c.terms + '/' + c.terms + ' kỳ</b>';
-                  if (paidCount > 0) return '<b style="color:#2563eb;">● Đã đóng ' + paidCount + '/' + c.terms + ' kỳ</b>';
-                  return '<span style="color:#64748b;">Chưa đóng kỳ nào</span>';
-                })()}
-              </span>
             </div>
           </td>
           <td>
@@ -1513,19 +1520,35 @@
             </div>
           </td>
           <td style="text-align:right;" class="money">${formatMoney(c.price)}</td>
-          <td style="text-align:right;" class="col-highlight money">${formatMoney(c.deposit)}</td>
-          <td style="text-align:center;" class="col-highlight"><b>${c.terms} kỳ</b></td>
+          <td style="text-align:right;" class="col-highlight">
+            <div class="money text-success">${formatMoney(totalCollected)}</div>
+            <div style="font-size:10.5px; color:#64748b;">Cọc: ${formatMoney(c.deposit)}</div>
+          </td>
+          <td style="text-align:center;" class="col-highlight">
+            <b>${c.terms} kỳ</b>
+            <div style="font-size:11px; margin-top:2px;">
+              ${paidCount === c.terms ? 
+                '<span class="term-status-badge status-paid" style="font-size:10px; padding:1px 6px;">Đã tất toán</span>' : 
+                (paidCount > 0 ? '<span style="color:#2563eb; font-weight:700;">Đã đóng ' + paidCount + '/' + c.terms + ' kỳ</span>' : '<span style="color:#94a3b8;">Chưa đóng kỳ nào</span>')}
+            </div>
+          </td>
+          <td style="text-align:right;">
+            <div class="money" style="color:${currentRemainingDebt === 0 ? '#16a34a' : '#dc2626'};">${formatMoney(currentRemainingDebt)}</div>
+            <div style="font-size:10.5px; color:#64748b;">${currentRemainingDebt === 0 ? '● Hết nợ' : 'Còn ' + (c.terms - paidCount) + ' kỳ'}</div>
+          </td>
           <td style="text-align:right; color:#2563eb;" class="money">${formatMoney(c.monthlyAmount)}</td>
           <td style="text-align:center;" onclick="event.stopPropagation();">
             <div style="display:flex; gap:3px; justify-content:center;">
-              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');" title="Lịch trả góp">📅</button>
+              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');" title="Xem lịch đóng tiền">
+                📅 ${isExpanded ? '▲ Đóng' : '▼ Chi tiết'}
+              </button>
               <button class="btn btn-edit btn-sm" onclick="startEdit('${c.id}')" title="Sửa">✏️</button>
               <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')" title="Xóa">🗑️</button>
             </div>
           </td>
         `;
       } else {
-        // HÀNG ĐẦY ĐỦ 15 CỘT CHUẨN NOTION
+        // HÀNG ĐẦY ĐỦ 16 CỘT CHUẨN NOTION - ĐỒNG BỘ 100%
         trMain.innerHTML = `
           <td style="text-align:center; color:#94a3b8;">
             <span class="expand-chevron">▶</span>${index + 1}
@@ -1540,12 +1563,21 @@
           <td><span class="tag tag-qty">${c.qty || '01'}</span></td>
           <td><span class="tag tag-condition">${c.condition || '99%'}</span></td>
           <td style="text-align:right;" class="money">${formatMoney(c.price)}</td>
-          <td style="text-align:right;" class="col-highlight money">${formatMoney(c.deposit)}</td>
-          <td style="text-align:center;" class="col-highlight"><b>${c.terms}</b></td>
+          <td style="text-align:right;" class="col-highlight">
+            <div class="money text-success">${formatMoney(totalCollected)}</div>
+            <div style="font-size:10.5px; color:#64748b;">Cọc: ${formatMoney(c.deposit)}</div>
+          </td>
+          <td style="text-align:center;" class="col-highlight">
+            <b>${c.terms} kỳ</b>
+            <div style="font-size:10.5px; color:#2563eb; font-weight:600;">(Đã đóng ${paidCount}/${c.terms})</div>
+          </td>
+          <td style="text-align:right;">
+            <div class="money" style="color:${currentRemainingDebt === 0 ? '#16a34a' : '#dc2626'};">${formatMoney(currentRemainingDebt)}</div>
+          </td>
           <td style="text-align:right; color:#2563eb;" class="money">${formatMoney(c.monthlyAmount)}</td>
           <td style="text-align:center;" onclick="event.stopPropagation();">
             <div style="display:flex; gap:3px; justify-content:center;">
-              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');" title="Lịch trả góp">📅</button>
+              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');" title="Xem lịch đóng tiền">📅</button>
               <button class="btn btn-edit btn-sm" onclick="startEdit('${c.id}')" title="Sửa">✏️</button>
               <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')" title="Xóa">🗑️</button>
             </div>
@@ -1558,7 +1590,7 @@
       if (isExpanded) {
         const trDetail = document.createElement("tr");
         trDetail.className = "detail-row";
-        const totalCols = (viewMode === 'compact') ? 8 : 15;
+        const totalCols = (viewMode === 'compact') ? 9 : 16;
 
         let scheduleHtml = "";
         (c.schedule || []).forEach(s => {
@@ -1645,16 +1677,16 @@
             <span class="m-finance-val">${formatMoney(c.price)}</span>
           </div>
           <div class="m-finance-item">
-            <span class="m-finance-label">Tiền Cọc</span>
-            <span class="m-finance-val text-success">${formatMoney(c.deposit)}</span>
+            <span class="m-finance-label">Đã Thu (Cọc + Kỳ)</span>
+            <span class="m-finance-val text-success">${formatMoney(totalCollected)}</span>
           </div>
           <div class="m-finance-item">
-            <span class="m-finance-label">Kỳ Hạn</span>
-            <span class="m-finance-val">${c.terms} kỳ</span>
+            <span class="m-finance-label">Tiến Độ Góp</span>
+            <span class="m-finance-val" style="color:#2563eb;">Đã đóng ${paidCount}/${c.terms} kỳ</span>
           </div>
           <div class="m-finance-item">
-            <span class="m-finance-label">Mỗi Kỳ Góp</span>
-            <span class="m-finance-val text-primary">${formatMoney(c.monthlyAmount)}</span>
+            <span class="m-finance-label">Dư Nợ Còn Lại</span>
+            <span class="m-finance-val" style="color:${currentRemainingDebt === 0 ? '#16a34a' : '#dc2626'};">${formatMoney(currentRemainingDebt)}</span>
           </div>
         </div>
 
