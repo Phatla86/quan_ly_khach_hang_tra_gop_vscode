@@ -780,6 +780,12 @@
       <button class="btn btn-primary" onclick="openNewCustomerModal()" style="width:auto;">
         ➕ Nhập Khách Mới
       </button>
+      <button class="btn btn-secondary btn-sm" onclick="syncWithServer(true)" title="Làm mới dữ liệu từ server">
+        🔄 Đồng Bộ Ngay
+      </button>
+      <button class="btn btn-secondary btn-sm" onclick="downloadServerDatabase()" title="Tải file database.json về chép vào VS Code">
+        📥 Tải DB Về VS Code
+      </button>
       <button class="btn btn-secondary btn-sm" onclick="exportToCSV()">
         📥 Xuất Excel
       </button>
@@ -1179,6 +1185,57 @@
     return list;
   }
 
+  // Tự động kiểm tra và đồng bộ thời gian thực mỗi 4 giây (Điện thoại & Máy tính tự thấy nhau)
+  let lastSyncTimestamp = Date.now();
+  let syncInterval = null;
+
+  async function startRealtimeSync() {
+    if (syncInterval) clearInterval(syncInterval);
+    syncInterval = setInterval(async () => {
+      // Chỉ poll nếu người dùng không đang sửa form để tránh gián đoạn
+      const isEditing = document.getElementById("editCustomerId") && document.getElementById("editCustomerId").value;
+      if (!isEditing) {
+        await silentSyncWithServer();
+      }
+    }, 4000); // 4 giây tự động cập nhật ngầm một lần
+  }
+
+  // Đồng bộ ngầm không giật màn hình
+  async function silentSyncWithServer() {
+    if (!apiBaseUrl && !isServerConnected) return;
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/customers`, { signal: AbortSignal.timeout(2500) });
+      if (res.ok) {
+        const serverData = await res.json();
+        // So sánh nếu dữ liệu có thay đổi thì mới render lại
+        const currentStr = JSON.stringify(customers);
+        const newStr = JSON.stringify(serverData);
+        if (currentStr !== newStr) {
+          console.log("[Realtime Sync] Dữ liệu thay đổi từ thiết bị khác, tự động cập nhật!");
+          customers = serverData;
+          localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
+          updateKPIs();
+          renderTable();
+          const badge = document.getElementById("serverStatusBadge");
+          if (badge) {
+            const time = new Date().toLocaleTimeString('vi-VN');
+            badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block;"></span> Đồng bộ thời gian thực (${time})`;
+          }
+        }
+      }
+    } catch(e) {}
+  }
+
+  // Tải database.json trực tiếp từ Render về máy tính
+  function downloadServerDatabase() {
+    const blob = new Blob([JSON.stringify(customers, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "database.json";
+    a.click();
+    alert("Đã tải file database.json mới nhất từ Render về máy! Bạn chỉ cần copy đè file này vào thư mục VS Code.");
+  }
+
   // Kết nối Server Node.js (hỗ trợ cả chạy qua port 3000 lẫn Live Server port 5500)
   async function syncWithServer() {
     const endpoints = ['', 'http://localhost:3000', 'http://127.0.0.1:3000'];
@@ -1199,6 +1256,7 @@
           }
           updateKPIs();
           renderTable();
+          startRealtimeSync();
           return true;
         }
       } catch (e) {}
@@ -1216,21 +1274,61 @@
     return false;
   }
 
+  // Tính toán KPI đồng bộ chính xác theo từng kỳ thu tiền thực tế
   function updateKPIs() {
     let totalRevenue = 0;
     let totalDeposit = 0;
+    let totalCollectedFromTerms = 0;
+    let totalRemainingDebt = 0;
     let totalMonthly = 0;
 
     customers.forEach(c => {
-      totalRevenue += (c.price || 0);
-      totalDeposit += (c.deposit || 0);
+      const price = c.price || 0;
+      const deposit = c.deposit || 0;
+      const terms = c.terms || 9;
+      totalRevenue += price;
+      totalDeposit += deposit;
       totalMonthly += (c.monthlyAmount || 0);
+
+      // Tính tổng tiền các kỳ đã thực thu
+      let paidFromTerms = 0;
+      if (c.schedule && c.schedule.length > 0) {
+        c.schedule.forEach(s => {
+          if (s.status === 'paid' && s.actualAmount) {
+            paidFromTerms += s.actualAmount;
+          }
+        });
+      }
+      totalCollectedFromTerms += paidFromTerms;
+
+      // Dư nợ còn lại của khách này
+      const originalDebt = Math.max(0, price - deposit);
+      const currentDebt = Math.max(0, originalDebt - paidFromTerms);
+      totalRemainingDebt += currentDebt;
     });
+
+    const totalCollectedAll = totalDeposit + totalCollectedFromTerms;
 
     document.getElementById("kpiTotalCustomers").innerText = customers.length;
     document.getElementById("kpiTotalRevenue").innerText = formatMoney(totalRevenue);
-    document.getElementById("kpiTotalDeposit").innerText = formatMoney(totalDeposit);
-    document.getElementById("kpiTotalMonthly").innerText = formatMoney(totalMonthly);
+    
+    // Đã thu (Cọc + Các kỳ đã đóng)
+    const depEl = document.getElementById("kpiTotalDeposit");
+    if (depEl) {
+      depEl.innerText = formatMoney(totalCollectedAll);
+      const sub = depEl.parentElement.querySelector('.kpi-sub');
+      if (sub) sub.innerText = `Cọc: ${formatMoney(totalDeposit)} | Đã thu thêm: ${formatMoney(totalCollectedFromTerms)}`;
+    }
+
+    // Dư nợ còn lại cần thu
+    const debtEl = document.getElementById("kpiTotalMonthly");
+    if (debtEl) {
+      debtEl.innerText = formatMoney(totalRemainingDebt);
+      const title = debtEl.parentElement.querySelector('.kpi-title');
+      if (title) title.innerText = "DƯ NỢ CÒN LẠI CẦN THU";
+      const sub = debtEl.parentElement.querySelector('.kpi-sub');
+      if (sub) sub.innerText = `Khoản nợ trả góp chưa thu xong`;
+    }
   }
 
   // Chuyển chế độ xem Vừa màn hình (Compact) vs Đầy đủ (Full)
@@ -1392,6 +1490,15 @@
             <div class="cust-cell">
               <span class="cust-name">${c.name}</span>
               <span class="cust-phone">📞 ${c.phone}</span>
+              <span style="font-size:11px; margin-top:2px;">
+                ${(() => {
+                  let paidCount = 0;
+                  (c.schedule || []).forEach(s => { if (s.status === 'paid') paidCount++; });
+                  if (paidCount === c.terms) return '<b style="color:#16a34a;">● Đã tất toán ' + c.terms + '/' + c.terms + ' kỳ</b>';
+                  if (paidCount > 0) return '<b style="color:#2563eb;">● Đã đóng ' + paidCount + '/' + c.terms + ' kỳ</b>';
+                  return '<span style="color:#64748b;">Chưa đóng kỳ nào</span>';
+                })()}
+              </span>
             </div>
           </td>
           <td>
