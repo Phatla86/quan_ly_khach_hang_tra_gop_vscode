@@ -21,10 +21,10 @@
         "term": 1,
         "dueDate": "23/10/2026",
         "amount": 1841000,
-        "actualAmount": 1841000,
-        "paidDate": "11/10/2026",
-        "debt": 0,
-        "status": "paid"
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1841000,
+        "status": "upcoming"
       },
       {
         "term": 2,
