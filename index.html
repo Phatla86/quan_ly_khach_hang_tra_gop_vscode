@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Phần Mềm Quản Lý Khách Hàng Mua Máy & Trả Góp</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --navy-title: #0369a1;
+      --navy-bg: #e0f2fe;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --border-dark: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --radius: 10px;
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 16px;
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+
+    .container {
+      max-width: 1720px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #fff;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+
+    .brand-text p {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* KPI Summary */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .kpi-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-main);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* Layout Controller */
+    .layout-wrapper {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 16px;
+      align-items: start;
+      transition: all 0.25s ease;
+    }
+
+    .layout-wrapper.full-width {
+      grid-template-columns: 1fr;
+    }
+
+    .layout-wrapper.full-width #sidebarForm {
+      display: none;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card-header h2 {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #1e293b;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #334155;
+    }
+
+    .form-group label .required {
+      color: var(--danger);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 13px;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--text-main);
+      transition: border 0.15s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 7px 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      border-color: var(--border-dark);
+      color: #334155;
+    }
+
+    .btn-secondary:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    .btn-secondary.active {
+      background: #eff6ff;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 11.5px;
+      border-radius: 5px;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #dc2626;
+      border-color: #fca5a5;
+    }
+
+    .btn-danger:hover {
+      background: #fecaca;
+    }
+
+    .btn-edit {
+      background: #eff6ff;
+      color: #2563eb;
+      border-color: #bfdbfe;
+    }
+
+    .btn-edit:hover {
+      background: #dbeafe;
+    }
+
+    /* Table Toolbar */
+    .table-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      width: 250px;
+      max-width: 100%;
+      padding: 7px 10px;
+      font-size: 12.5px;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    /* Table Responsive & Scaling */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #ffffff;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12.5px;
+    }
+
+    thead th {
+      background: #f8fafc;
+      padding: 9px 10px;
+      font-weight: 600;
+      color: #64748b;
+      font-size: 11.5px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid #f1f5f9;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    thead th .col-icon {
+      font-size: 10px;
+      color: #94a3b8;
+      margin-right: 3px;
+    }
+
+    tbody td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid #f8fafc;
+      color: #1e293b;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    tbody tr.customer-row {
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    tbody tr.customer-row:hover {
+      background-color: #f1f5f9;
+    }
+
+    tbody tr.customer-row.is-expanded {
+      background-color: #f8fafc;
+      border-left: 3px solid var(--primary);
+    }
+
+    .expand-chevron {
+      display: inline-block;
+      transition: transform 0.2s ease;
+      color: #64748b;
+      font-size: 9px;
+      margin-right: 4px;
+    }
+
+    .is-expanded .expand-chevron {
+      transform: rotate(90deg);
+      color: var(--primary);
+    }
+
+    /* Smart Compact Column Styles */
+    .cust-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cust-name {
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 13px;
+    }
+
+    .cust-phone {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .device-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .device-main {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .device-sub {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .tag-storage { background: #e0e7ff; color: #3730a3; }
+    .tag-condition { background: #fef3c7; color: #b45309; }
+    .tag-qty { background: #f1f5f9; color: #475569; }
+    .tag-color { background: #f1f5f9; color: #334155; }
+    .tag-imei { font-family: monospace; font-size: 10.5px; color: #64748b; }
+
+    .tag-model-box {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #334155;
+      font-size: 11.5px;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .col-highlight {
+      background-color: #f0f7ff;
+      font-weight: 600;
+      color: #1e40af;
+    }
+
+    .money {
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+      font-size: 12.5px;
+    }
+
+    .text-success { color: var(--success); }
+    .text-primary { color: var(--primary); }
+    .text-danger { color: var(--danger); }
+
+    /* EXPANDABLE DETAIL ROW */
+    .detail-row td {
+      padding: 0;
+      background: #f8fafc;
+      white-space: normal;
+    }
+
+    .detail-container {
+      padding: 12px 14px 16px 14px;
+      border-bottom: 2px solid #cbd5e1;
+      border-top: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .detail-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--navy-title);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+    }
+
+    .detail-badge-terms {
+      background: var(--navy-bg);
+      color: var(--navy-title);
+      padding: 3px 12px;
+      border-radius: 16px;
+      font-size: 11.5px;
+      font-weight: 700;
+      border: 1px solid #bae6fd;
+    }
+
+    .schedule-table-wrap {
+      background: #ffffff;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .schedule-table thead th {
+      background: #f8fafc;
+      padding: 8px 10px;
+      color: #64748b;
+      font-weight: 700;
+      font-size: 11px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .schedule-table tbody td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #1e293b;
+      white-space: nowrap;
+    }
+
+    .term-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .status-upcoming { background: #e0f2fe; color: #0284c7; }
+    .status-upcoming .dot { width: 6px; height: 6px; border-radius: 50%; background: #0284c7; display: inline-block; }
+    .status-paid { background: #dcfce7; color: #16a34a; }
+    .status-paid .dot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; display: inline-block; }
+    .status-overdue { background: #fee2e2; color: #dc2626; }
+    .status-overdue .dot { width: 6px; height: 6px; border-radius: 50%; background: #dc2626; display: inline-block; }
+
+    .btn-pay-action {
+      padding: 2px 7px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+    }
+
+    .btn-pay-action.paid {
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+
+    /* Modal Form for Mobile / Quick Add */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+      backdrop-filter: blur(2px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-md);
+      padding: 20px;
+    }
+
+    .modal-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #94a3b8;
+    }
+
+    /* Mobile Cards View (Hiện khi màn hình nhỏ) */
+    .mobile-cards-view {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .customer-card-mobile {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .m-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .m-cust-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .m-cust-phone {
+      font-size: 13px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .m-device-box {
+      background: #f8fafc;
+      padding: 8px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      font-size: 12.5px;
+    }
+
+    .m-finance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #f1f5f9;
+      padding: 10px;
+      border-radius: 7px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .m-finance-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .m-finance-label {
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .m-finance-val {
+      font-weight: 700;
+      font-size: 13px;
+      color: #0f172a;
+    }
+
+    /* RESPONSIVE BREAKPOINTS */
+    @media (max-width: 1024px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      #sidebarForm {
+        display: none; /* Mặc định ẩn sidebar trên màn hình hẹp để bảng rộng 100% */
+      }
+      .btn-toggle-form {
+        display: inline-flex !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      header {
+        margin-bottom: 12px;
+      }
+      .brand-text h1 {
+        font-size: 16px;
+      }
+      .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .kpi-card {
+        padding: 10px 12px;
+      }
+      .kpi-value {
+        font-size: 16px;
+      }
+      .desktop-table-view {
+        display: none; /* Ẩn bảng ngang trên điện thoại */
+      }
+      .mobile-cards-view {
+        display: flex; /* Hiện dạng thẻ thân thiện trên điện thoại */
+      }
+      .search-input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">📱</div>
+      <div class="brand-text">
+        <h1>Phần Mềm Quản Lý Khách Hàng Mua Máy & Trả Góp</h1>
+        <p>
+          <span id="serverStatusBadge" style="display:inline-flex; align-items:center; gap:5px; font-weight:600; font-size:11.5px; padding:2px 8px; border-radius:12px; background:#dcfce7; color:#16a34a;">
+            <span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block;"></span> Đồng bộ file database.json
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-primary" onclick="openNewCustomerModal()" style="width:auto;">
+        ➕ Nhập Khách Mới
+      </button>
+      <button class="btn btn-secondary btn-sm" onclick="exportToCSV()">
+        📥 Xuất Excel
+      </button>
+      <button class="btn btn-secondary btn-sm" onclick="exportJSON()">
+        💾 Sao Lưu
+      </button>
+      <label class="btn btn-secondary btn-sm" style="cursor:pointer; margin-bottom:0;">
+        📤 Phục Hồi
+        <input type="file" style="display:none;" onchange="importJSON(event)" accept=".json">
+      </label>
+    </div>
+  </header>
+
+  <!-- KPI Overview -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <span class="kpi-title">Tổng Khách Hàng</span>
+      <span class="kpi-value" id="kpiTotalCustomers">0</span>
+      <span class="kpi-sub">Hồ sơ trong hệ thống</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-title">Tổng Giá Gốc Máy Bán</span>
+      <span class="kpi-value text-primary" id="kpiTotalRevenue">0 đ</span>
+      <span class="kpi-sub">Doanh số niêm yết</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-title">Đã Thu Cọc (Trả Trước)</span>
+      <span class="kpi-value text-success" id="kpiTotalDeposit">0 đ</span>
+      <span class="kpi-sub">Tiền mặt nhận ngay</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-title">Tổng Tiền Thu Mỗi Kỳ</span>
+      <span class="kpi-value text-danger" id="kpiTotalMonthly">0 đ</span>
+      <span class="kpi-sub">Khoản thu hàng tháng</span>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="layout-wrapper full-width" id="mainLayout">
+    <!-- CỘT FORM (Có thể ẩn/hiện hoặc mở dạng modal) -->
+    <div class="card" id="sidebarForm">
+      <div class="card-header">
+        <h2 id="sidebarFormTitle">📝 Nhập Hồ Sơ Khách Hàng</h2>
+        <button class="btn btn-secondary btn-sm" onclick="toggleSidebarForm()">Đóng form</button>
+      </div>
+      <div id="formContainerSidebar">
+        <!-- Form sẽ được render ở đây hoặc modal -->
+      </div>
+    </div>
+
+    <!-- CỘT BẢNG QUẢN LÝ (Mặc định 100% bề ngang để xem trọn vẹn không cần cuộn) -->
+    <div class="card">
+      <div class="card-header">
+        <h2>
+          <span>📋</span> Danh Sách Khách Hàng Mua Máy
+        </h2>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <!-- Nút chuyển đổi giao diện: Gọn (Vừa màn hình) vs Đầy đủ -->
+          <button class="btn btn-secondary btn-sm active" id="btnViewCompact" onclick="setViewMode('compact')" title="Xem vừa màn hình không cần kéo qua">
+            👁️ Vừa Màn Hình
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btnViewFull" onclick="setViewMode('full')" title="Xem tất cả các cột chi tiết">
+            📑 Đầy Đủ Cột
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btnToggleSidebar" onclick="toggleSidebarForm()" title="Mở form bên cạnh">
+            📝 Hiện Form Cột Trái
+          </button>
+        </div>
+      </div>
+
+      <div class="table-toolbar">
+        <div class="toolbar-left">
+          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Tìm kiếm tên, SĐT, Model, IMEI..." oninput="renderTable()">
+          <select id="filterTerm" class="form-control" style="width:115px; padding:6px 8px; font-size:12px;" onchange="renderTable()">
+            <option value="ALL">Tất cả kỳ</option>
+            <option value="6">6 kỳ</option>
+            <option value="9">9 kỳ</option>
+            <option value="12">12 kỳ</option>
+          </select>
+        </div>
+        <div class="toolbar-right">
+          <span style="font-size:12px; color:var(--text-muted);">
+            Đang hiển thị: <b id="displayCount">0</b> hồ sơ
+          </span>
+        </div>
+      </div>
+
+      <!-- 1. GIAO DIỆN BẢNG DÀNH CHO MÁY TÍNH (DESKTOP / LAPTOP) -->
+      <div class="desktop-table-view">
+        <div class="table-responsive">
+          <table id="mainCustomerTable">
+            <thead id="tableHead">
+              <!-- Render Header via JS tùy theo chế độ Gọn hay Đầy đủ -->
+            </thead>
+            <tbody id="tableBody">
+              <!-- Render via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 2. GIAO DIỆN THẺ DÀNH CHO ĐIỆN THOẠI (MOBILE PHONES) -->
+      <div class="mobile-cards-view" id="mobileCardsContainer">
+        <!-- Render thẻ khách hàng trên điện thoại via JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nhập/Sửa Khách Hàng (Tối ưu dùng mượt trên cả điện thoại & máy tính) -->
+<div class="modal-overlay" id="formModal">
+  <div class="modal-card">
+    <div class="modal-card-header">
+      <h3 id="modalFormTitle" style="font-size:16px; font-weight:700;">➕ Nhập Khách Hàng Mới</h3>
+      <button class="close-btn" onclick="closeFormModal()">×</button>
+    </div>
+    <div id="formContainerModal">
+      <!-- HTML Form được nhúng vào đây -->
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATE FORM NHẬP LIỆU GỐC -->
+<template id="formTemplate">
+  <form id="customerForm" onsubmit="handleSaveCustomer(event); return false;">
+    <input type="hidden" id="editCustomerId">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Họ Tên Khách Hàng <span class="required">*</span></label>
+        <input type="text" id="custName" class="form-control" placeholder="VÕ THÁI NGUYÊN" required>
+      </div>
+      <div class="form-group">
+        <label>SĐT <span class="required">*</span></label>
+        <input type="tel" id="custPhone" class="form-control" placeholder="0945040887" inputmode="tel" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Model Máy <span class="required">*</span></label>
+        <input type="text" id="custModel" class="form-control" placeholder="iPhone 12 Pro Max" required oninput="autoBuildDeviceName()">
+      </div>
+      <div class="form-group">
+        <label>Dung Lượng</label>
+        <select id="custCapacity" class="form-control" onchange="autoBuildDeviceName()">
+          <option value="128GB">128GB</option>
+          <option value="256GB">256GB</option>
+          <option value="512GB">512GB</option>
+          <option value="1TB">1TB</option>
+          <option value="64GB">64GB</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row-3">
+      <div class="form-group">
+        <label>Màu Sắc</label>
+        <input type="text" id="custColor" class="form-control" placeholder="Gold" oninput="autoBuildDeviceName()">
+      </div>
+      <div class="form-group">
+        <label>Số Lượng</label>
+        <input type="text" id="custQty" class="form-control" value="01">
+      </div>
+      <div class="form-group">
+        <label>Tình Trạng</label>
+        <select id="custCondition" class="form-control">
+          <option value="99%">99%</option>
+          <option value="New 100%">New 100%</option>
+          <option value="98%">98%</option>
+          <option value="95%">95%</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Mã IMEI (15 số)</label>
+      <input type="text" id="custImei" class="form-control" placeholder="3544408933768..." oninput="autoBuildDeviceName()">
+    </div>
+
+    <div class="form-group">
+      <label>Model Thiết Bị (Ghép Tên)</label>
+      <input type="text" id="custDeviceModel" class="form-control" placeholder="iPhone 12 Pro Max - Gold - 128GB">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Giá Gốc (VNĐ) <span class="required">*</span></label>
+        <input type="number" id="custPrice" class="form-control" min="0" step="any" inputmode="numeric" placeholder="11190000" required>
+      </div>
+      <div class="form-group">
+        <label>Tiền Cọc (Đã Trả Trước) <span class="required">*</span></label>
+        <input type="number" id="custDeposit" class="form-control" min="0" step="any" inputmode="numeric" placeholder="2797500" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Số Kỳ (Tháng Góp) <span class="required">*</span></label>
+        <input type="number" id="custTerms" class="form-control" min="1" step="1" inputmode="numeric" placeholder="9" value="9" required>
+      </div>
+      <div class="form-group">
+        <label>Tiền Mỗi Kỳ (VNĐ) <span class="required">*</span></label>
+        <input type="number" id="custMonthlyAmount" class="form-control" min="0" step="any" inputmode="numeric" placeholder="1444000" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Ngày Bắt Đầu / Mua Máy</label>
+      <input type="date" id="custDate" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label>Ghi Chú</label>
+      <input type="text" id="custNotes" class="form-control" placeholder="Ghi chú thêm...">
+    </div>
+
+    <div style="display:flex; gap:8px; margin-top:14px;">
+      <button type="submit" class="btn btn-primary" id="btnSubmit">
+        💾 Lưu Thông Tin Khách Hàng
+      </button>
+      <button type="button" class="btn btn-secondary" onclick="closeFormModal()">
+        Đóng
+      </button>
+    </div>
+  </form>
+</template>
+
+<script>
+  let viewMode = 'compact'; // 'compact': Vừa màn hình không cần kéo qua; 'full': Tất cả 15 cột Notion
+  let isServerConnected = false;
+  let apiBaseUrl = '';
+  let expandedCustomerId = null; // Khách hàng đang mở rộng chi tiết các kỳ
+
+  // DỮ LIỆU GỐC THEO BẢNG CỦA BẠN
+  const INITIAL_DATA = [
+    {
+      id: "KH1",
+      name: "VÕ THÁI NGUYÊN",
+      phone: "0945040887",
+      deviceModel: "iPhone 12 Pro Max - Gold - 128GB",
+      model: "iPhone 12 Pro Max",
+      capacity: "128GB",
+      color: "Gold",
+      imei: "354440893376821",
+      qty: "01",
+      condition: "99%",
+      price: 11190000,
+      deposit: 2797500,
+      terms: 9,
+      monthlyAmount: 1444000,
+      startDate: "2026-10-01",
+      notes: "Đóng tiền ngày 01 hàng tháng",
+      schedule: [
+        { term: 1, dueDate: "01/11/2026", amount: 1444000, actualAmount: null, paidDate: null, debt: 1444000, status: "upcoming" },
+        { term: 2, dueDate: "01/12/2026", amount: 1444000, actualAmount: null, paidDate: null, debt: 1444000, status: "upcoming" },
+        { term: 3, dueDate: "01/01/2027", amount: 1444000, actualAmount: null, paidDate: null, debt: 1444000, status: "upcoming" },
+        { term: 4, dueDate: "01/02/2027", amount: 1444000, actualAmount: null, paidDate: null, debt: 1444000, status: "upcoming" },
+        { term: 5, dueDate: "01/03/2027", amount: 1444000, actualAmount: null, paidDate: null, debt: 1444000, status: "upcoming" },
+        { term: 6, dueDate: "01/04/2027", amount: 1444000, actualAmount: null, paidDate: null, debt: 1444000, status: "upcoming" },
+        { term: 7, dueDate: "01/05/2027", amount: 1444000, actualAmount: null, paidDate: null, debt: 1444000, status: "upcoming" },
+        { term: 8, dueDate: "01/06/2027", amount: 1444000, actualAmount: null, paidDate: null, debt: 1444000, status: "upcoming" },
+        { term: 9, dueDate: "01/07/2027", amount: 1444000, actualAmount: null, paidDate: null, debt: 1444000, status: "upcoming" }
+      ]
+    },
+    {
+      id: "KH2",
+      name: "ĐƯỜNG VĂN HƯỞNG",
+      phone: "0974579070",
+      deviceModel: "iPhone 14 - Starlight - 9521",
+      model: "iPhone 14",
+      capacity: "128GB",
+      color: "Starlight",
+      imei: "351168082939521",
+      qty: "01",
+      condition: "99%",
+      price: 10490000,
+      deposit: 3147000,
+      terms: 9,
+      monthlyAmount: 1260000,
+      startDate: "2026-10-01",
+      notes: "Chuyển khoản Vietcombank",
+      schedule: [
+        { term: 1, dueDate: "01/11/2026", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
+        { term: 2, dueDate: "01/12/2026", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
+        { term: 3, dueDate: "01/01/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
+        { term: 4, dueDate: "01/02/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
+        { term: 5, dueDate: "01/03/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
+        { term: 6, dueDate: "01/04/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
+        { term: 7, dueDate: "01/05/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
+        { term: 8, dueDate: "01/06/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" },
+        { term: 9, dueDate: "01/07/2027", amount: 1260000, actualAmount: null, paidDate: null, debt: 1260000, status: "upcoming" }
+      ]
+    },
+    {
+      id: "KH3",
+      name: "ĐINH THỊ HỒNG NGÂN",
+      phone: "0869882912",
+      deviceModel: "iPhone 12 - Green - 7325",
+      model: "iPhone 12",
+      capacity: "128GB",
+      color: "Green",
+      imei: "353062111517325",
+      qty: "01",
+      condition: "99%",
+      price: 8090000,
+      deposit: 1618000,
+      terms: 6,
+      monthlyAmount: 1660000,
+      startDate: "2026-09-01",
+      notes: "Đã thanh toán kỳ 1",
+      schedule: [
+        { term: 1, dueDate: "01/10/2026", amount: 1660000, actualAmount: 1660000, paidDate: "01/10/2026", debt: 0, status: "paid" },
+        { term: 2, dueDate: "01/11/2026", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" },
+        { term: 3, dueDate: "01/12/2026", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" },
+        { term: 4, dueDate: "01/01/2027", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" },
+        { term: 5, dueDate: "01/02/2027", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" },
+        { term: 6, dueDate: "01/03/2027", amount: 1660000, actualAmount: null, paidDate: null, debt: 1660000, status: "upcoming" }
+      ]
+    },
+    {
+      id: "KH4",
+      name: "TẠ QUỐC QUYỀN",
+      phone: "0981100593",
+      deviceModel: "iPhone 16 Pro Max - Natural - 7355",
+      model: "iPhone 16 Pro Max",
+      capacity: "256GB",
+      color: "Natural",
+      imei: "352641353957355",
+      qty: "01",
+      condition: "99%",
+      price: 26490000,
+      deposit: 10596000,
+      terms: 9,
+      monthlyAmount: 2733000,
+      startDate: "2026-10-01",
+      notes: "Hẹn ngày 01 đóng qua tài khoản",
+      schedule: [
+        { term: 1, dueDate: "01/11/2026", amount: 2733000, actualAmount: null, paidDate: null, debt: 2733000, status: "upcoming" },
+        { term: 2, dueDate: "01/12/2026", amount: 2733000, actualAmount: null, paidDate: null, debt: 2733000, status: "upcoming" },
+        { term: 3, dueDate: "01/01/2027", amount: 2733000, actualAmount: null, paidDate: null, debt: 2733000, status: "upcoming" },
+        { term: 4, dueDate: "01/02/2027", amount: 2733000, actualAmount: null, paidDate: null, debt: 2733000, status: "upcoming" },
+        { term: 5, dueDate: "01/03/2027", amount: 2733000, actualAmount: null, paidDate: null, debt: 2733000, status: "upcoming" },
+        { term: 6, dueDate: "01/04/2027", amount: 2733000, actualAmount: null, paidDate: null, debt: 2733000, status: "upcoming" },
+        { term: 7, dueDate: "01/05/2027", amount: 2733000, actualAmount: null, paidDate: null, debt: 2733000, status: "upcoming" },
+        { term: 8, dueDate: "01/06/2027", amount: 2733000, actualAmount: null, paidDate: null, debt: 2733000, status: "upcoming" },
+        { term: 9, dueDate: "01/07/2027", amount: 2733000, actualAmount: null, paidDate: null, debt: 2733000, status: "upcoming" }
+      ]
+    }
+  ];
+
+  function loadStorage() {
+    const raw = localStorage.getItem("NOTION_INSTALLMENT_CUSTOMERS_V2");
+    if (!raw) {
+      localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(INITIAL_DATA));
+      return INITIAL_DATA;
+    }
+    try {
+      const data = JSON.parse(raw);
+      data.forEach(c => {
+        if (!c.schedule || c.schedule.length === 0) {
+          c.schedule = generateDefaultSchedule(c.terms, c.monthlyAmount, c.startDate);
+        }
+      });
+      return data;
+    } catch(e) {
+      return INITIAL_DATA;
+    }
+  }
+
+  let customers = loadStorage();
+
+  function formatMoney(num) {
+    if (num === null || num === undefined || isNaN(num)) return "—";
+    return new Intl.NumberFormat('vi-VN').format(Math.round(num)) + " đ";
+  }
+
+  function generateDefaultSchedule(terms, monthlyAmount, startDateStr) {
+    const list = [];
+    const baseDate = startDateStr ? new Date(startDateStr) : new Date();
+    for (let i = 1; i <= terms; i++) {
+      const d = new Date(baseDate);
+      d.setMonth(d.getMonth() + i);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      list.push({
+        term: i,
+        dueDate: `${day}/${month}/${year}`,
+        amount: monthlyAmount,
+        actualAmount: null,
+        paidDate: null,
+        debt: monthlyAmount,
+        status: "upcoming"
+      });
+    }
+    return list;
+  }
+
+  // Kết nối Server Node.js (hỗ trợ cả chạy qua port 3000 lẫn Live Server port 5500)
+  async function syncWithServer() {
+    const endpoints = ['', 'http://localhost:3000', 'http://127.0.0.1:3000'];
+    for (let base of endpoints) {
+      try {
+        const res = await fetch(base + '/api/customers', { signal: AbortSignal.timeout(1500) });
+        if (res.ok) {
+          apiBaseUrl = base;
+          const data = await res.json();
+          isServerConnected = true;
+          customers = data;
+          localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
+          const badge = document.getElementById("serverStatusBadge");
+          if (badge) {
+            badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block;"></span> Đồng bộ file database.json (Online)`;
+            badge.style.background = "#dcfce7";
+            badge.style.color = "#16a34a";
+          }
+          updateKPIs();
+          renderTable();
+          return true;
+        }
+      } catch (e) {}
+    }
+    isServerConnected = false;
+    const badge = document.getElementById("serverStatusBadge");
+    if (badge) {
+      badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:#ca8a04; display:inline-block;"></span> Chế độ lưu máy (Offline)`;
+      badge.style.background = "#fef9c3";
+      badge.style.color = "#a16207";
+    }
+    customers = loadStorage();
+    updateKPIs();
+    renderTable();
+    return false;
+  }
+
+  function updateKPIs() {
+    let totalRevenue = 0;
+    let totalDeposit = 0;
+    let totalMonthly = 0;
+
+    customers.forEach(c => {
+      totalRevenue += (c.price || 0);
+      totalDeposit += (c.deposit || 0);
+      totalMonthly += (c.monthlyAmount || 0);
+    });
+
+    document.getElementById("kpiTotalCustomers").innerText = customers.length;
+    document.getElementById("kpiTotalRevenue").innerText = formatMoney(totalRevenue);
+    document.getElementById("kpiTotalDeposit").innerText = formatMoney(totalDeposit);
+    document.getElementById("kpiTotalMonthly").innerText = formatMoney(totalMonthly);
+  }
+
+  // Chuyển chế độ xem Vừa màn hình (Compact) vs Đầy đủ (Full)
+  function setViewMode(mode) {
+    viewMode = mode;
+    document.getElementById("btnViewCompact").classList.toggle("active", mode === 'compact');
+    document.getElementById("btnViewFull").classList.toggle("active", mode === 'full');
+    renderTable();
+  }
+
+  function toggleSidebarForm() {
+    const layout = document.getElementById("mainLayout");
+    const isFull = layout.classList.toggle("full-width");
+    const btn = document.getElementById("btnToggleSidebar");
+    if (btn) {
+      btn.innerText = isFull ? "📝 Hiện Form Cột Trái" : "◀ Ẩn Form (Mở Rộng Bảng)";
+    }
+    if (!isFull) {
+      initFormInContainer("formContainerSidebar");
+    }
+  }
+
+  function openNewCustomerModal() {
+    initFormInContainer("formContainerModal");
+    resetForm();
+    document.getElementById("modalFormTitle").innerText = "➕ Nhập Khách Hàng Mới";
+    document.getElementById("formModal").classList.add("active");
+  }
+
+  function closeFormModal() {
+    document.getElementById("formModal").classList.remove("active");
+  }
+
+  function initFormInContainer(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    if (!container.querySelector('form')) {
+      const template = document.getElementById("formTemplate");
+      container.innerHTML = "";
+      container.appendChild(template.content.cloneNode(true));
+      const dateInp = container.querySelector('#custDate');
+      if (dateInp) dateInp.value = new Date().toISOString().split('T')[0];
+    }
+  }
+
+  function autoBuildDeviceName() {
+    const form = document.querySelector('.modal-overlay.active form') || document.querySelector('#sidebarForm form');
+    if (!form) return;
+    const model = form.querySelector("#custModel").value.trim();
+    const color = form.querySelector("#custColor").value.trim();
+    const cap = form.querySelector("#custCapacity").value;
+    const imei = form.querySelector("#custImei").value.trim();
+
+    let parts = [];
+    if (model) parts.push(model);
+    if (color) parts.push(color);
+    if (imei && imei.length >= 4) {
+      parts.push(imei.slice(-4));
+    } else if (cap) {
+      parts.push(cap);
+    }
+
+    if (parts.length > 0) {
+      form.querySelector("#custDeviceModel").value = parts.join(" - ");
+    }
+  }
+
+  function toggleCustomerExpand(id, event) {
+    if (event && (event.target.closest('button') || event.target.closest('input') || event.target.closest('a'))) {
+      return;
+    }
+    expandedCustomerId = (expandedCustomerId === id) ? null : id;
+    renderTable();
+  }
+
+  // RENDER BẢNG CHÍNH
+  function renderTable() {
+    const thead = document.getElementById("tableHead");
+    const tbody = document.getElementById("tableBody");
+    const mobileContainer = document.getElementById("mobileCardsContainer");
+
+    const search = document.getElementById("searchInput").value.toLowerCase().trim();
+    const filterTerm = document.getElementById("filterTerm").value;
+
+    const filtered = customers.filter(c => {
+      const matchSearch = (c.name || '').toLowerCase().includes(search) ||
+                          (c.phone || '').toLowerCase().includes(search) ||
+                          (c.model || '').toLowerCase().includes(search) ||
+                          (c.deviceModel || '').toLowerCase().includes(search) ||
+                          (c.imei || '').toLowerCase().includes(search);
+      const matchTerm = filterTerm === "ALL" || (c.terms || '').toString() === filterTerm;
+      return matchSearch && matchTerm;
+    });
+
+    document.getElementById("displayCount").innerText = filtered.length;
+
+    // RENDER HEADER DỰA TRÊN VIEW MODE
+    if (viewMode === 'compact') {
+      // 7 CỘT THÔNG MINH - VỪA KHÍT MỌI MÀN HÌNH KHÔNG CẦN CUỘN
+      thead.innerHTML = `
+        <tr>
+          <th style="width:36px; text-align:center;">#</th>
+          <th><span class="col-icon">👤</span> Khách Hàng</th>
+          <th><span class="col-icon">📱</span> Thiết Bị & IMEI</th>
+          <th style="text-align:right;"><span class="col-icon">💰</span> Giá Gốc</th>
+          <th style="text-align:right;" class="col-highlight"><span class="col-icon">💵</span> Tiền Cọc</th>
+          <th style="text-align:center;" class="col-highlight"><span class="col-icon">📅</span> Số Kỳ</th>
+          <th style="text-align:right;"><span class="col-icon">💳</span> Mỗi Kỳ Góp</th>
+          <th style="text-align:center; width:95px;">Thao Tác</th>
+        </tr>
+      `;
+    } else {
+      // 15 CỘT ĐẦY ĐỦ NHƯ BẢNG NOTION
+      thead.innerHTML = `
+        <tr>
+          <th style="width:36px; text-align:center;">#</th>
+          <th><span class="col-icon">Aa</span> Họ Tên</th>
+          <th><span class="col-icon">Aa</span> SĐT</th>
+          <th><span class="col-icon">🔗</span> Model Thiết Bị</th>
+          <th><span class="col-icon">📱</span> Model</th>
+          <th><span class="col-icon">🏷️</span> Dung Lượng</th>
+          <th><span class="col-icon">🎨</span> Màu Sắc</th>
+          <th><span class="col-icon">🔢</span> IMEI</th>
+          <th><span class="col-icon">📦</span> Số Lượng</th>
+          <th><span class="col-icon">✨</span> Tình Trạng</th>
+          <th style="text-align:right;"><span class="col-icon">💰</span> Giá Gốc</th>
+          <th style="text-align:right;" class="col-highlight"><span class="col-icon">💵</span> Tiền Cọc</th>
+          <th style="text-align:center;" class="col-highlight"><span class="col-icon">📅</span> Số Kỳ</th>
+          <th style="text-align:right;"><span class="col-icon">💳</span> Tiền Mỗi Kỳ</th>
+          <th style="text-align:center; width:95px;">Thao Tác</th>
+        </tr>
+      `;
+    }
+
+    tbody.innerHTML = "";
+    mobileContainer.innerHTML = "";
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="15" style="text-align:center; padding:30px; color:#94a3b8;">Không có dữ liệu phù hợp</td></tr>`;
+      mobileContainer.innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8;">Không có dữ liệu phù hợp</div>`;
+      return;
+    }
+
+    filtered.forEach((c, index) => {
+      const isExpanded = (expandedCustomerId === c.id);
+
+      // 1. RENDER DESKTOP ROW
+      const trMain = document.createElement("tr");
+      trMain.className = `customer-row ${isExpanded ? 'is-expanded' : ''}`;
+      trMain.onclick = (e) => toggleCustomerExpand(c.id, e);
+
+      if (viewMode === 'compact') {
+        // HÀNG RÚT GỌN THÔNG MINH - VỪA MÀN HÌNH KHÔNG CẦN KÉO QUA
+        trMain.innerHTML = `
+          <td style="text-align:center; color:#94a3b8;">
+            <span class="expand-chevron">▶</span>${index + 1}
+          </td>
+          <td>
+            <div class="cust-cell">
+              <span class="cust-name">${c.name}</span>
+              <span class="cust-phone">📞 ${c.phone}</span>
+            </div>
+          </td>
+          <td>
+            <div class="device-cell">
+              <span class="device-main">${c.model}</span>
+              <div class="device-sub">
+                <span class="tag tag-storage">${c.capacity || '128GB'}</span>
+                <span class="tag tag-color">${c.color || 'Titan'}</span>
+                <span class="tag tag-condition">${c.condition || '99%'}</span>
+                <span class="tag-imei">IMEI: ${c.imei ? c.imei.slice(-6) : '-'}</span>
+              </div>
+            </div>
+          </td>
+          <td style="text-align:right;" class="money">${formatMoney(c.price)}</td>
+          <td style="text-align:right;" class="col-highlight money">${formatMoney(c.deposit)}</td>
+          <td style="text-align:center;" class="col-highlight"><b>${c.terms} kỳ</b></td>
+          <td style="text-align:right; color:#2563eb;" class="money">${formatMoney(c.monthlyAmount)}</td>
+          <td style="text-align:center;" onclick="event.stopPropagation();">
+            <div style="display:flex; gap:3px; justify-content:center;">
+              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');" title="Lịch trả góp">📅</button>
+              <button class="btn btn-edit btn-sm" onclick="startEdit('${c.id}')" title="Sửa">✏️</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')" title="Xóa">🗑️</button>
+            </div>
+          </td>
+        `;
+      } else {
+        // HÀNG ĐẦY ĐỦ 15 CỘT CHUẨN NOTION
+        trMain.innerHTML = `
+          <td style="text-align:center; color:#94a3b8;">
+            <span class="expand-chevron">▶</span>${index + 1}
+          </td>
+          <td><b>${c.name}</b></td>
+          <td>${c.phone}</td>
+          <td><span class="tag-model-box" title="${c.deviceModel}">${c.deviceModel || '-'}</span></td>
+          <td><b>${c.model}</b></td>
+          <td><span class="tag tag-storage">${c.capacity || '128GB'}</span></td>
+          <td>${c.color || '-'}</td>
+          <td style="font-family:monospace; font-size:11.5px;">${c.imei || '-'}</td>
+          <td><span class="tag tag-qty">${c.qty || '01'}</span></td>
+          <td><span class="tag tag-condition">${c.condition || '99%'}</span></td>
+          <td style="text-align:right;" class="money">${formatMoney(c.price)}</td>
+          <td style="text-align:right;" class="col-highlight money">${formatMoney(c.deposit)}</td>
+          <td style="text-align:center;" class="col-highlight"><b>${c.terms}</b></td>
+          <td style="text-align:right; color:#2563eb;" class="money">${formatMoney(c.monthlyAmount)}</td>
+          <td style="text-align:center;" onclick="event.stopPropagation();">
+            <div style="display:flex; gap:3px; justify-content:center;">
+              <button class="btn btn-secondary btn-sm" onclick="toggleCustomerExpand('${c.id}');" title="Lịch trả góp">📅</button>
+              <button class="btn btn-edit btn-sm" onclick="startEdit('${c.id}')" title="Sửa">✏️</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')" title="Xóa">🗑️</button>
+            </div>
+          </td>
+        `;
+      }
+      tbody.appendChild(trMain);
+
+      // DÒNG MỞ RỘNG KỲ THANH TOÁN (DESKTOP)
+      if (isExpanded) {
+        const trDetail = document.createElement("tr");
+        trDetail.className = "detail-row";
+        const totalCols = (viewMode === 'compact') ? 8 : 15;
+
+        let scheduleHtml = "";
+        (c.schedule || []).forEach(s => {
+          let badge = `<span class="term-status-badge status-upcoming"><span class="dot"></span>Trong Hạn / Sắp Tới</span>`;
+          let btn = `<button class="btn-pay-action" onclick="markPaid('${c.id}', ${s.term})">Thu tiền</button>`;
+
+          if (s.status === 'paid') {
+            badge = `<span class="term-status-badge status-paid"><span class="dot"></span>Đã Thanh Toán</span>`;
+            btn = `<button class="btn-pay-action paid" onclick="undoPayment('${c.id}', ${s.term})">Hủy thu</button>`;
+          }
+
+          scheduleHtml += `
+            <tr>
+              <td style="text-align:center; font-weight:600;">${s.term}</td>
+              <td style="font-weight:500;">${s.dueDate}</td>
+              <td style="font-weight:600;">${formatMoney(s.amount)}</td>
+              <td>${s.actualAmount ? formatMoney(s.actualAmount) : "—"}</td>
+              <td>${s.paidDate || "—"}</td>
+              <td style="font-weight:600; color:${s.debt > 0 ? '#1e293b' : '#16a34a'};">${formatMoney(s.debt)}</td>
+              <td>${badge}</td>
+              <td style="text-align:center;">${btn}</td>
+            </tr>
+          `;
+        });
+
+        trDetail.innerHTML = `
+          <td colspan="${totalCols}">
+            <div class="detail-container">
+              <div class="detail-header">
+                <div class="detail-title">
+                  <span>𝌆</span> CHI TIẾT CÁC KỲ THANH TOÁN
+                  <span style="font-size:12px; color:#64748b; font-weight:500; margin-left:6px;">
+                    — Khách hàng: <b>${c.name}</b> (${c.model})
+                  </span>
+                </div>
+                <div class="detail-badge-terms">${c.terms} KỲ</div>
+              </div>
+              <div class="schedule-table-wrap">
+                <table class="schedule-table">
+                  <thead>
+                    <tr>
+                      <th style="width:40px; text-align:center;">KỲ</th>
+                      <th>NGÀY ĐẾN HẠN</th>
+                      <th>TIỀN MỖI KỲ</th>
+                      <th>THỰC THU</th>
+                      <th>NGÀY THỰC THU</th>
+                      <th>DƯ NỢ</th>
+                      <th>TRẠNG THÁI</th>
+                      <th style="width:80px; text-align:center;">THAO TÁC</th>
+                    </tr>
+                  </thead>
+                  <tbody>${scheduleHtml}</tbody>
+                </table>
+              </div>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(trDetail);
+      }
+
+      // 2. RENDER MOBILE CARD (CHO ĐIỆN THOẠI)
+      const mCard = document.createElement("div");
+      mCard.className = "customer-card-mobile";
+      mCard.innerHTML = `
+        <div class="m-card-head">
+          <div>
+            <div class="m-cust-name">${c.name}</div>
+            <a href="tel:${c.phone}" class="m-cust-phone">📞 ${c.phone}</a>
+          </div>
+          <div style="display:flex; gap:4px;">
+            <button class="btn btn-edit btn-sm" onclick="startEdit('${c.id}')">✏️ Sửa</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.id}')">🗑️</button>
+          </div>
+        </div>
+
+        <div class="m-device-box">
+          <b>${c.model}</b> &bull; ${c.capacity || '128GB'} &bull; ${c.color || 'Gold'} &bull; ${c.condition || '99%'}
+          <div style="font-size:11px; color:#64748b; margin-top:2px;">IMEI: ${c.imei || 'Chưa có'}</div>
+        </div>
+
+        <div class="m-finance-grid">
+          <div class="m-finance-item">
+            <span class="m-finance-label">Giá Gốc</span>
+            <span class="m-finance-val">${formatMoney(c.price)}</span>
+          </div>
+          <div class="m-finance-item">
+            <span class="m-finance-label">Tiền Cọc</span>
+            <span class="m-finance-val text-success">${formatMoney(c.deposit)}</span>
+          </div>
+          <div class="m-finance-item">
+            <span class="m-finance-label">Kỳ Hạn</span>
+            <span class="m-finance-val">${c.terms} kỳ</span>
+          </div>
+          <div class="m-finance-item">
+            <span class="m-finance-label">Mỗi Kỳ Góp</span>
+            <span class="m-finance-val text-primary">${formatMoney(c.monthlyAmount)}</span>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary btn-sm" style="width:100%; justify-content:center;" onclick="toggleCustomerExpand('${c.id}')">
+          📅 ${isExpanded ? '▲ Thu gọn lịch góp' : '▼ Xem chi tiết ' + c.terms + ' kỳ thanh toán'}
+        </button>
+
+        ${isExpanded ? `
+          <div style="margin-top:10px; border-top:1px dashed #cbd5e1; padding-top:10px;">
+            ${(c.schedule || []).map(s => `
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f1f5f9; font-size:12px;">
+                <div>
+                  <b>Kỳ ${s.term}</b> &bull; ${s.dueDate}<br>
+                  <span style="color:#2563eb; font-weight:600;">${formatMoney(s.amount)}</span>
+                </div>
+                <div style="text-align:right;">
+                  ${s.status === 'paid' ? 
+                    `<span class="term-status-badge status-paid"><span class="dot"></span>Đã đóng</span><br><button class="btn-pay-action paid" style="margin-top:3px;" onclick="undoPayment('${c.id}', ${s.term})">Hủy</button>` :
+                    `<span class="term-status-badge status-upcoming"><span class="dot"></span>Chưa đóng</span><br><button class="btn-pay-action" style="margin-top:3px;" onclick="markPaid('${c.id}', ${s.term})">Thu tiền</button>`}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+      `;
+      mobileContainer.appendChild(mCard);
+    });
+  }
+
+  // Thu tiền 1 kỳ
+  async function markPaid(customerId, termNumber) {
+    const c = customers.find(item => item.id === customerId);
+    if (!c || !c.schedule) return;
+
+    const termItem = c.schedule.find(s => s.term === termNumber);
+    if (!termItem) return;
+
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+
+    termItem.actualAmount = termItem.amount;
+    termItem.paidDate = `${day}/${month}/${year}`;
+    termItem.debt = 0;
+    termItem.status = "paid";
+
+    localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
+    updateKPIs();
+    renderTable();
+
+    if (isServerConnected) {
+      try {
+        await fetch(`${apiBaseUrl}/api/customers/${customerId}/pay`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ term: termNumber, action: 'pay' })
+        });
+      } catch (err) {}
+    }
+  }
+
+  // Hủy thu tiền 1 kỳ
+  async function undoPayment(customerId, termNumber) {
+    const c = customers.find(item => item.id === customerId);
+    if (!c || !c.schedule) return;
+
+    const termItem = c.schedule.find(s => s.term === termNumber);
+    if (!termItem) return;
+
+    termItem.actualAmount = null;
+    termItem.paidDate = null;
+    termItem.debt = termItem.amount;
+    termItem.status = "upcoming";
+
+    localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
+    updateKPIs();
+    renderTable();
+
+    if (isServerConnected) {
+      try {
+        await fetch(`${apiBaseUrl}/api/customers/${customerId}/pay`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ term: termNumber, action: 'undo' })
+        });
+      } catch (err) {}
+    }
+  }
+
+  // Lưu khách hàng (Đảm bảo 100% không bao giờ reload mất form)
+  async function handleSaveCustomer(e) {
+    if (e && e.preventDefault) e.preventDefault();
+
+    const form = document.querySelector('.modal-overlay.active form') || document.querySelector('#sidebarForm form');
+    if (!form) return;
+
+    const editId = form.querySelector("#editCustomerId").value;
+    const name = form.querySelector("#custName").value.trim();
+    const phone = form.querySelector("#custPhone").value.trim();
+    const model = form.querySelector("#custModel").value.trim();
+    const capacity = form.querySelector("#custCapacity").value;
+    const color = form.querySelector("#custColor").value.trim();
+    const qty = form.querySelector("#custQty").value.trim() || "01";
+    const condition = form.querySelector("#custCondition").value;
+    const imei = form.querySelector("#custImei").value.trim();
+    const deviceModel = form.querySelector("#custDeviceModel").value.trim() || `${model} - ${color} - ${capacity}`;
+    const price = parseFloat(form.querySelector("#custPrice").value) || 0;
+    const deposit = parseFloat(form.querySelector("#custDeposit").value) || 0;
+    const terms = parseInt(form.querySelector("#custTerms").value) || 9;
+    const monthlyAmount = parseFloat(form.querySelector("#custMonthlyAmount").value) || 0;
+    const startDate = form.querySelector("#custDate").value || new Date().toISOString().split('T')[0];
+    const notes = form.querySelector("#custNotes").value.trim();
+
+    if (deposit > price) {
+      alert("Tiền cọc (trả trước) không thể lớn hơn giá gốc máy!");
+      return;
+    }
+
+    let targetCust = null;
+
+    if (editId) {
+      const idx = customers.findIndex(item => item.id === editId);
+      if (idx !== -1) {
+        const oldC = customers[idx];
+        let newSchedule = oldC.schedule;
+        if (oldC.terms !== terms || oldC.monthlyAmount !== monthlyAmount) {
+          newSchedule = generateDefaultSchedule(terms, monthlyAmount, startDate);
+        }
+        customers[idx] = {
+          ...customers[idx],
+          name, phone, model, capacity, color, qty, condition, imei, deviceModel,
+          price, deposit, terms, monthlyAmount, startDate, notes,
+          schedule: newSchedule
+        };
+        targetCust = customers[idx];
+      }
+    } else {
+      const newCustId = "KH_" + Date.now();
+      targetCust = {
+        id: newCustId,
+        name, phone, model, capacity, color, qty, condition, imei, deviceModel,
+        price, deposit, terms, monthlyAmount, startDate, notes,
+        schedule: generateDefaultSchedule(terms, monthlyAmount, startDate)
+      };
+      customers.unshift(targetCust);
+      expandedCustomerId = newCustId;
+    }
+
+    // 1. Lưu ngay vào LocalStorage
+    localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
+    updateKPIs();
+    renderTable();
+
+    // 2. Đồng bộ ngầm lên server nếu có
+    if (isServerConnected && targetCust) {
+      try {
+        if (editId) {
+          await fetch(`${apiBaseUrl}/api/customers/${editId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(targetCust)
+          });
+        } else {
+          await fetch(apiBaseUrl + '/api/customers', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(targetCust)
+          });
+        }
+      } catch (err) {}
+    }
+
+    closeFormModal();
+    resetForm();
+    alert("Đã lưu thông tin khách hàng thành công!");
+  }
+
+  function resetForm() {
+    const forms = document.querySelectorAll('form');
+    forms.forEach(f => {
+      f.reset();
+      f.querySelector("#editCustomerId").value = "";
+      f.querySelector("#custDate").value = new Date().toISOString().split('T')[0];
+      f.querySelector("#custTerms").value = "9";
+      f.querySelector("#custCapacity").value = "128GB";
+      f.querySelector("#custCondition").value = "99%";
+      f.querySelector("#custQty").value = "01";
+    });
+  }
+
+  function startEdit(id) {
+    const c = customers.find(item => item.id === id);
+    if (!c) return;
+
+    openNewCustomerModal();
+    const form = document.querySelector('.modal-overlay.active form');
+    if (!form) return;
+
+    form.querySelector("#editCustomerId").value = c.id;
+    form.querySelector("#custName").value = c.name;
+    form.querySelector("#custPhone").value = c.phone;
+    form.querySelector("#custModel").value = c.model;
+    form.querySelector("#custCapacity").value = c.capacity || "128GB";
+    form.querySelector("#custColor").value = c.color || "";
+    form.querySelector("#custQty").value = c.qty || "01";
+    form.querySelector("#custCondition").value = c.condition || "99%";
+    form.querySelector("#custImei").value = c.imei || "";
+    form.querySelector("#custDeviceModel").value = c.deviceModel || "";
+    form.querySelector("#custPrice").value = c.price;
+    form.querySelector("#custDeposit").value = c.deposit;
+    form.querySelector("#custTerms").value = c.terms;
+    form.querySelector("#custMonthlyAmount").value = c.monthlyAmount;
+    form.querySelector("#custDate").value = c.startDate || "";
+    form.querySelector("#custNotes").value = c.notes || "";
+
+    document.getElementById("modalFormTitle").innerText = "✏️ Cập Nhật Khách Hàng: " + c.name;
+  }
+
+  async function deleteCustomer(id) {
+    const c = customers.find(item => item.id === id);
+    if (!c) return;
+    if (confirm(`Bạn có chắc muốn xóa khách hàng "${c.name}" (${c.model})?`)) {
+      customers = customers.filter(item => item.id !== id);
+      if (expandedCustomerId === id) expandedCustomerId = null;
+      localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
+      updateKPIs();
+      renderTable();
+
+      if (isServerConnected) {
+        try {
+          await fetch(`${apiBaseUrl}/api/customers/${id}`, { method: 'DELETE' });
+        } catch (err) {}
+      }
+    }
+  }
+
+  // Xuất file CSV
+  function exportToCSV() {
+    let csv = "\uFEFF";
+    csv += "Họ Tên,SĐT,Model Thiết Bị,Model,Dung Lượng,Màu Sắc,IMEI,Số Lượng,Tình Trạng,Giá Gốc,Tiền Cọc,Số Kỳ,Tiền Mỗi Kỳ,Ngày Bắt Đầu,Ghi Chú\n";
+    customers.forEach(c => {
+      csv += [
+        `"${c.name}"`, `"${c.phone}"`, `"${c.deviceModel || ''}"`, `"${c.model}"`,
+        `"${c.capacity || ''}"`, `"${c.color || ''}"`, `"${c.imei || ''}"`,
+        `"${c.qty || '01'}"`, `"${c.condition || '99%'}"`, c.price, c.deposit,
+        c.terms, c.monthlyAmount, `"${c.startDate || ''}"`, `"${c.notes || ''}"`
+      ].join(",") + "\n";
+    });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `danh_sach_khach_tra_gop_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+  }
+
+  function exportJSON() {
+    const blob = new Blob([JSON.stringify(customers, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `backup_khach_hang_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+  }
+
+  function importJSON(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const data = JSON.parse(evt.target.result);
+        if (Array.isArray(data)) {
+          customers = data;
+          localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
+          updateKPIs();
+          renderTable();
+          alert("Phục hồi dữ liệu thành công!");
+        }
+      } catch (err) { alert("File không hợp lệ!"); }
+    };
+    reader.readAsText(file);
+  }
+
+  // Khởi tạo form trong sidebar
+  initFormInContainer("formContainerSidebar");
+
+  // Kết nối và render
+  syncWithServer();
+</script>
+
+</body>
+</html>

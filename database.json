@@ -1,0 +1,305 @@
+[
+  {
+    "id": "KH_1791652690164",
+    "name": "NGUYỄN ANH KHOA",
+    "phone": "0937206401",
+    "model": "iPhone 17",
+    "capacity": "256GB",
+    "color": "Black",
+    "qty": "01",
+    "condition": "99%",
+    "imei": "352000937283343",
+    "deviceModel": "iPhone 17 - Black - 3343",
+    "price": 21390000,
+    "deposit": 10695000,
+    "terms": 9,
+    "monthlyAmount": 1841000,
+    "startDate": "2026-09-23",
+    "notes": "",
+    "schedule": [
+      {
+        "term": 1,
+        "dueDate": "23/10/2026",
+        "amount": 1841000,
+        "actualAmount": 1841000,
+        "paidDate": "11/10/2026",
+        "debt": 0,
+        "status": "paid"
+      },
+      {
+        "term": 2,
+        "dueDate": "23/11/2026",
+        "amount": 1841000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1841000,
+        "status": "upcoming"
+      },
+      {
+        "term": 3,
+        "dueDate": "23/12/2026",
+        "amount": 1841000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1841000,
+        "status": "upcoming"
+      },
+      {
+        "term": 4,
+        "dueDate": "23/01/2027",
+        "amount": 1841000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1841000,
+        "status": "upcoming"
+      },
+      {
+        "term": 5,
+        "dueDate": "23/02/2027",
+        "amount": 1841000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1841000,
+        "status": "upcoming"
+      },
+      {
+        "term": 6,
+        "dueDate": "23/03/2027",
+        "amount": 1841000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1841000,
+        "status": "upcoming"
+      },
+      {
+        "term": 7,
+        "dueDate": "23/04/2027",
+        "amount": 1841000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1841000,
+        "status": "upcoming"
+      },
+      {
+        "term": 8,
+        "dueDate": "23/05/2027",
+        "amount": 1841000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1841000,
+        "status": "upcoming"
+      },
+      {
+        "term": 9,
+        "dueDate": "23/06/2027",
+        "amount": 1841000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1841000,
+        "status": "upcoming"
+      }
+    ]
+  },
+  {
+    "id": "KH1",
+    "name": "VÕ THÁI NGUYÊN",
+    "phone": "0945040887",
+    "deviceModel": "iPhone 12 Pro Max - Gold - 128GB",
+    "model": "iPhone 12 Pro Max",
+    "capacity": "128GB",
+    "color": "Gold",
+    "imei": "354440893376821",
+    "qty": "01",
+    "condition": "99%",
+    "price": 11190000,
+    "deposit": 2797500,
+    "terms": 9,
+    "monthlyAmount": 1444000,
+    "startDate": "2026-10-01",
+    "notes": "Đóng tiền ngày 01 hàng tháng",
+    "schedule": [
+      {
+        "term": 1,
+        "dueDate": "01/11/2026",
+        "amount": 1444000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1444000,
+        "status": "upcoming"
+      },
+      {
+        "term": 2,
+        "dueDate": "01/12/2026",
+        "amount": 1444000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1444000,
+        "status": "upcoming"
+      },
+      {
+        "term": 3,
+        "dueDate": "01/01/2027",
+        "amount": 1444000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1444000,
+        "status": "upcoming"
+      },
+      {
+        "term": 4,
+        "dueDate": "01/02/2027",
+        "amount": 1444000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1444000,
+        "status": "upcoming"
+      },
+      {
+        "term": 5,
+        "dueDate": "01/03/2027",
+        "amount": 1444000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1444000,
+        "status": "upcoming"
+      },
+      {
+        "term": 6,
+        "dueDate": "01/04/2027",
+        "amount": 1444000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1444000,
+        "status": "upcoming"
+      },
+      {
+        "term": 7,
+        "dueDate": "01/05/2027",
+        "amount": 1444000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1444000,
+        "status": "upcoming"
+      },
+      {
+        "term": 8,
+        "dueDate": "01/06/2027",
+        "amount": 1444000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1444000,
+        "status": "upcoming"
+      },
+      {
+        "term": 9,
+        "dueDate": "01/07/2027",
+        "amount": 1444000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 1444000,
+        "status": "upcoming"
+      }
+    ]
+  },
+  {
+    "id": "KH4",
+    "name": "TẠ QUỐC QUYỀN",
+    "phone": "0981100593",
+    "deviceModel": "iPhone 16 Pro Max - Natural - 7355",
+    "model": "iPhone 16 Pro Max",
+    "capacity": "256GB",
+    "color": "Natural",
+    "imei": "352641353957355",
+    "qty": "01",
+    "condition": "99%",
+    "price": 26490000,
+    "deposit": 10596000,
+    "terms": 9,
+    "monthlyAmount": 2733000,
+    "startDate": "2026-10-01",
+    "notes": "Hẹn ngày 01 đóng qua tài khoản",
+    "schedule": [
+      {
+        "term": 1,
+        "dueDate": "01/11/2026",
+        "amount": 2733000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 2733000,
+        "status": "upcoming"
+      },
+      {
+        "term": 2,
+        "dueDate": "01/12/2026",
+        "amount": 2733000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 2733000,
+        "status": "upcoming"
+      },
+      {
+        "term": 3,
+        "dueDate": "01/01/2027",
+        "amount": 2733000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 2733000,
+        "status": "upcoming"
+      },
+      {
+        "term": 4,
+        "dueDate": "01/02/2027",
+        "amount": 2733000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 2733000,
+        "status": "upcoming"
+      },
+      {
+        "term": 5,
+        "dueDate": "01/03/2027",
+        "amount": 2733000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 2733000,
+        "status": "upcoming"
+      },
+      {
+        "term": 6,
+        "dueDate": "01/04/2027",
+        "amount": 2733000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 2733000,
+        "status": "upcoming"
+      },
+      {
+        "term": 7,
+        "dueDate": "01/05/2027",
+        "amount": 2733000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 2733000,
+        "status": "upcoming"
+      },
+      {
+        "term": 8,
+        "dueDate": "01/06/2027",
+        "amount": 2733000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 2733000,
+        "status": "upcoming"
+      },
+      {
+        "term": 9,
+        "dueDate": "01/07/2027",
+        "amount": 2733000,
+        "actualAmount": null,
+        "paidDate": null,
+        "debt": 2733000,
+        "status": "upcoming"
+      }
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "name": "quan-ly-khach-hang-tra-gop",
+  "version": "1.0.0",
+  "description": "Phan mem quan ly khach hang mua may va tra gop (Node.js & Web UI)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "tra-gop",
+    "quan-ly-khach-hang",
+    "pos"
+  ],
+  "author": "Phat La",
+  "license": "ISC"
+}
