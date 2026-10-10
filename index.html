@@ -1603,13 +1603,15 @@
     if (syncInterval) clearInterval(syncInterval);
     syncInterval = setInterval(async () => {
       const isEditing = document.getElementById("formModal").classList.contains("active");
-      if (!isEditing && apiBaseUrl) {
+      if (!isEditing && isServerConnected) {
         try {
-          const res = await fetch(`${apiBaseUrl}/api/customers`, { signal: AbortSignal.timeout(2500) });
+          const targetUrl = (apiBaseUrl ? apiBaseUrl : '') + '/api/customers';
+          const res = await fetch(targetUrl, { signal: AbortSignal.timeout(2500) });
           if (res.ok) {
             const rawData = await res.json();
             const serverData = Array.isArray(rawData) ? rawData : (rawData.data || []);
             if (JSON.stringify(customers) !== JSON.stringify(serverData)) {
+              console.log("[Auto Sync] Dữ liệu từ Render có thay đổi, tự động cập nhật ngay!");
               customers = serverData;
               localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
               updateKPIs();
@@ -1618,7 +1620,7 @@
           }
         } catch(e) {}
       }
-    }, 3500);
+    }, 2500); // 2.5 giây tự động đồng bộ ngầm
   }
 
   // 6. BUSINESS CALCULATION (KPIs)
@@ -2059,14 +2061,17 @@
     renderTable();
     ToastService.show(`Đã thu ${formatMoney(termItem.amount)} cho Kỳ ${termNumber} (${c.name})!`, "success");
 
-    if (apiBaseUrl) {
+    if (isServerConnected) {
       try {
-        await fetch(`${apiBaseUrl}/api/customers/${customerId}/pay`, {
+        const targetUrl = (apiBaseUrl ? apiBaseUrl : '') + `/api/customers/${customerId}/pay`;
+        await fetch(targetUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ term: termNumber, action: 'pay' })
         });
-      } catch (err) {}
+      } catch (err) {
+        console.error("Lỗi khi gửi lệnh thu tiền lên Cloud:", err);
+      }
     }
   }
 
@@ -2087,14 +2092,17 @@
     renderTable();
     ToastService.show(`Đã hủy thu Kỳ ${termNumber} (${c.name})!`, "info");
 
-    if (apiBaseUrl) {
+    if (isServerConnected) {
       try {
-        await fetch(`${apiBaseUrl}/api/customers/${customerId}/pay`, {
+        const targetUrl = (apiBaseUrl ? apiBaseUrl : '') + `/api/customers/${customerId}/pay`;
+        await fetch(targetUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ term: termNumber, action: 'undo' })
         });
-      } catch (err) {}
+      } catch (err) {
+        console.error("Lỗi khi gửi lệnh hủy thu lên Cloud:", err);
+      }
     }
   }
 
@@ -2163,22 +2171,19 @@
     updateKPIs();
     renderTable();
 
-    if (apiBaseUrl && targetCust) {
+    if (isServerConnected && targetCust) {
       try {
-        if (editId) {
-          await fetch(`${apiBaseUrl}/api/customers/${editId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(targetCust)
-          });
-        } else {
-          await fetch(apiBaseUrl + '/api/customers', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(targetCust)
-          });
-        }
-      } catch (err) {}
+        const targetUrl = editId 
+          ? (apiBaseUrl ? apiBaseUrl : '') + `/api/customers/${editId}` 
+          : (apiBaseUrl ? apiBaseUrl : '') + '/api/customers';
+        await fetch(targetUrl, {
+          method: editId ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(targetCust)
+        });
+      } catch (err) {
+        console.error("Lỗi khi lưu khách hàng lên Cloud:", err);
+      }
     }
 
     closeFormModal();
@@ -2232,10 +2237,13 @@
       renderTable();
       ToastService.show(`Đã xóa khách hàng: ${c.name}`, "info");
 
-      if (apiBaseUrl) {
+      if (isServerConnected) {
         try {
-          await fetch(`${apiBaseUrl}/api/customers/${id}`, { method: 'DELETE' });
-        } catch (err) {}
+          const targetUrl = (apiBaseUrl ? apiBaseUrl : '') + `/api/customers/${id}`;
+          await fetch(targetUrl, { method: 'DELETE' });
+        } catch (err) {
+          console.error("Lỗi khi xóa khách hàng trên Cloud:", err);
+        }
       }
     }
   }
