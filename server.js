@@ -189,3 +189,17 @@ server.listen(PORT, () => {
   console.log(`  Co so du lieu luu tai : ${DB_FILE}`);
   console.log('====================================================');
 });
+
+// Cơ chế tự động Ping giữ server thức 24/24 trên Render (chống ngủ sau 15 phút)
+const RENDER_EXTERNAL_URL = process.env.RENDER_EXTERNAL_URL;
+if (RENDER_EXTERNAL_URL) {
+  const https = require('https');
+  console.log();
+  setInterval(() => {
+    https.get(RENDER_EXTERNAL_URL, (res) => {
+      console.log();
+    }).on('error', (err) => {
+      console.error('[Keep-Alive] Loi ping:', err.message);
+    });
+  }, 14 * 60 * 1000); // 14 phut ping 1 lan
+}
