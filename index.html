@@ -1236,31 +1236,45 @@
     alert("Đã tải file database.json mới nhất từ Render về máy! Bạn chỉ cần copy đè file này vào thư mục VS Code.");
   }
 
-  // Kết nối Server Node.js (hỗ trợ cả chạy qua port 3000 lẫn Live Server port 5500)
-  async function syncWithServer() {
-    const endpoints = ['', 'http://localhost:3000', 'http://127.0.0.1:3000'];
+  const RENDER_CLOUD_URL = 'https://quan-ly-khach-hang-tra-gop-vscode.onrender.com';
+
+  // Kết nối Server thông minh:
+  // Nếu mở trên Render -> dùng chính Render
+  // Nếu mở trên Localhost (127.0.0.1:5500) -> kết nối thẳng vào Render Cloud để dùng chung 1 database duy nhất!
+  async function syncWithServer(manualNotice = false) {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+    
+    // Nếu chạy local, ưu tiên kết nối thẳng vào Render Cloud để đồng bộ 100% với online
+    const endpoints = isLocal 
+      ? [RENDER_CLOUD_URL, '', 'http://localhost:3000', 'http://127.0.0.1:3000']
+      : ['', RENDER_CLOUD_URL, 'http://localhost:3000'];
+
     for (let base of endpoints) {
       try {
-        const res = await fetch(base + '/api/customers', { signal: AbortSignal.timeout(1500) });
+        const res = await fetch(base + '/api/customers', { signal: AbortSignal.timeout(3000) });
         if (res.ok) {
           apiBaseUrl = base;
           const data = await res.json();
           isServerConnected = true;
           customers = data;
           localStorage.setItem("NOTION_INSTALLMENT_CUSTOMERS_V2", JSON.stringify(customers));
+          
           const badge = document.getElementById("serverStatusBadge");
           if (badge) {
-            badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block;"></span> Đồng bộ file database.json (Online)`;
+            const serverName = base.includes('onrender.com') ? 'Cloud Render Online' : (base ? 'Local Node.js' : 'Server Hiện Tại');
+            badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block;"></span> Dùng chung Database: ${serverName}`;
             badge.style.background = "#dcfce7";
             badge.style.color = "#16a34a";
           }
           updateKPIs();
           renderTable();
           startRealtimeSync();
+          if (manualNotice) alert("Đã đồng bộ dữ liệu mới nhất từ Cloud thành công!");
           return true;
         }
       } catch (e) {}
     }
+
     isServerConnected = false;
     const badge = document.getElementById("serverStatusBadge");
     if (badge) {
