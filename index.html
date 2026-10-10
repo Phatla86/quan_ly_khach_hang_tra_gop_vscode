@@ -1808,7 +1808,7 @@
     const blob = new Blob([JSON.stringify(customers, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `backup_khach_ng_${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `backup_khach_hang_${new Date().toISOString().split('T')[0]}.json`;
     a.click();
   }
 
