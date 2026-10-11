@@ -1644,9 +1644,19 @@
       });
       totalCollectedTerms += paidTerms;
 
-      const originalDebt = Math.max(0, price - deposit);
-      const curDebt = Math.max(0, originalDebt - paidTerms);
-      totalRemaining += curDebt;
+      // Dư nợ còn lại = Tổng dư nợ của tất cả các kỳ chưa đóng (không phải gốc trừ cọc)
+      let custRemainingDebt = 0;
+      if (c.schedule && c.schedule.length > 0) {
+        c.schedule.forEach(s => {
+          if (s.status !== 'paid') {
+            custRemainingDebt += (s.debt !== undefined ? s.debt : (s.amount || c.monthlyAmount || 0));
+          }
+        });
+      } else {
+        const unpaidCount = Math.max(0, (c.terms || 0) - (c.paidTerms || 0));
+        custRemainingDebt = unpaidCount * (c.monthlyAmount || 0);
+      }
+      totalRemaining += custRemainingDebt;
     });
 
     const totalCollectedAll = totalDeposit + totalCollectedTerms;
@@ -1783,8 +1793,20 @@
         }
       });
 
-      const originalDebt = Math.max(0, (c.price || 0) - (c.deposit || 0));
-      const currentRemainingDebt = Math.max(0, originalDebt - totalPaidFromTerms);
+      // Dư nợ còn lại = Tổng dư nợ của tất cả các kỳ chưa đóng (không phải gốc trừ cọc)
+      let currentRemainingDebt = 0;
+      let unpaidTermsCount = 0;
+      if (c.schedule && c.schedule.length > 0) {
+        c.schedule.forEach(s => {
+          if (s.status !== 'paid') {
+            unpaidTermsCount++;
+            currentRemainingDebt += (s.debt !== undefined ? s.debt : (s.amount || c.monthlyAmount || 0));
+          }
+        });
+      } else {
+        unpaidTermsCount = Math.max(0, (c.terms || 0) - paidCount);
+        currentRemainingDebt = unpaidTermsCount * (c.monthlyAmount || 0);
+      }
       const totalCollected = (c.deposit || 0) + totalPaidFromTerms;
       const progressPercent = (c.terms > 0) ? Math.min(100, Math.round((paidCount / c.terms) * 100)) : 0;
       const initials = getInitials(c.name);
